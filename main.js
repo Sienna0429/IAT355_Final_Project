@@ -267,7 +267,7 @@ const bottom10CaffeineSpec = {
         y: {
             field: "Country",
             type: "nominal",
-            sort: "x",    // 从左到右越大，y 轴从上到下越高
+            sort: "x",
             title: "Country"
         },
 
@@ -315,7 +315,6 @@ const stressCoffeeSpec = {
             }
         },
 
-        // --- Jittered points layer ---
         {
             mark: {
                 type: "point",
