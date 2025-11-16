@@ -426,6 +426,62 @@ const coffeeActivityByAgeSummarySpec = {
 
 vegaEmbed("#chart7", coffeeActivityByAgeSummarySpec);
 
+const caffeineOccupationSpec = {
+    data: { url: "caffeine.csv" },
+
+    transform: [
+        {
+            aggregate: [
+                { op: "mean", field: "Caffeine_mg", as: "Avg_Caffeine" }
+            ],
+            groupby: ["Occupation"]
+        }
+    ],
+
+    mark: {
+        type: "point",
+        filled: true,
+        size: 100
+    },
+
+    width: 500,
+    height: 350,
+
+    encoding: {
+        x: {
+            field: "Avg_Caffeine",
+            type: "quantitative",
+            title: "Average caffeine intake (mg)",
+            scale: { domain: [235, 245] },
+            axis: {
+                format: "d",
+                tickCount: 6
+            }
+        },
+
+        y: {
+            field: "Occupation",
+            type: "nominal",
+            sort: "-x",
+            title: "Occupation"
+        },
+
+        color: { value: "#4C78A8" },
+
+        tooltip: [
+            { field: "Occupation", type: "nominal" },
+            {
+                field: "Avg_Caffeine",
+                type: "quantitative",
+                title: "Avg caffeine (mg)",
+                format: ".1f"
+            }
+        ]
+    }
+};
+
+vegaEmbed("#chart8", caffeineOccupationSpec);
+
 
 
 
