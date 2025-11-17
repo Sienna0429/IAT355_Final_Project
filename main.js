@@ -50,7 +50,7 @@ const spec = {
     }
 };
 
-vegaEmbed("#chart", spec);
+vegaEmbed("#sleepHours", spec);
 
 const sleepQualityStackedSpec = {
     data: { url: "caffeine.csv" },
@@ -101,7 +101,7 @@ const sleepQualityStackedSpec = {
     }
 };
 
-vegaEmbed("#chart2", sleepQualityStackedSpec);
+vegaEmbed("#sleepQuality", sleepQualityStackedSpec);
 
 const coffeeByAgeSpec = {
     data: { url: "caffeine.csv" },
@@ -166,7 +166,7 @@ const coffeeByAgeSpec = {
     }
 };
 
-vegaEmbed("#chart3", coffeeByAgeSpec);
+vegaEmbed("#coffeeByAge", coffeeByAgeSpec);
 
 const top10CaffeineSpec = {
     data: { url: "caffeine.csv" },
@@ -224,7 +224,7 @@ const top10CaffeineSpec = {
     }
 };
 
-vegaEmbed("#chart4", top10CaffeineSpec);
+vegaEmbed("#top10Caffeine", top10CaffeineSpec);
 
 const bottom10CaffeineSpec = {
     data: { url: "caffeine.csv" },
@@ -285,7 +285,7 @@ const bottom10CaffeineSpec = {
     }
 };
 
-vegaEmbed("#chart5", bottom10CaffeineSpec);
+vegaEmbed("#bottom10Caffeine", bottom10CaffeineSpec);
 
 const stressCoffeeSpec = {
     data: { url: "caffeine.csv" },
@@ -344,7 +344,7 @@ const stressCoffeeSpec = {
     ]
 };
 
-vegaEmbed("#chart6", stressCoffeeSpec);
+vegaEmbed("#stressCoffee", stressCoffeeSpec);
 
 const coffeeActivityByAgeSummarySpec = {
     data: { url: "caffeine.csv" },
@@ -424,7 +424,7 @@ const coffeeActivityByAgeSummarySpec = {
     }
 };
 
-vegaEmbed("#chart7", coffeeActivityByAgeSummarySpec);
+vegaEmbed("#coffeeActivityByAgeSummary", coffeeActivityByAgeSummarySpec);
 
 const caffeineOccupationSpec = {
     data: { url: "caffeine.csv" },
@@ -480,7 +480,7 @@ const caffeineOccupationSpec = {
     }
 };
 
-vegaEmbed("#chart8", caffeineOccupationSpec);
+vegaEmbed("#caffeineOccupation", caffeineOccupationSpec);
 
 
 
