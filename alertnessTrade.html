@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale">
-        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-        <title>Why do we drink coffee</title>
-        <link rel="stylesheet" href="styles.css"/>
-        <style type="text/tailwindcss">
-            @theme {
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Vega Lite -->
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <title>Why do we drink coffee</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style type="text/tailwindcss">
+        @theme {
                 --color-dark-blue: #1A3447;
                 --color-espresso: #362822;
                 --color-coffee: #F0C376;
@@ -18,27 +23,31 @@
                 --font-helvetica: "Helvetica"
             }
         </style>
-    </head>
+</head>
 
-    <body>
-        <div class="bg-violet-200 h-[167px] w-full py-[36px] px-[91px]">
-            <h1 class="text-center font-mono font-extrabold">Header</h1>
-        </div>
+<body>
+    <div class="bg-violet-200 h-[167px] w-full py-[36px] px-[91px]">
+        <h1 class="text-center font-mono font-extrabold">Header</h1>
+    </div>
 
-        <div class="bg-white h-auto w-full py-[101px] px-[90px]">
-            <h1 class="text-xxl text-espresso font-helvetica font-thin">Why Do We Drink Coffee?</h1>
-            <div class="grid grid-cols-3">
-                <div class="col-span-2">
-                   
-                </div>
-                <div class="">
-                    <img src="src\emotions.svg">
-                </div>
+    <div class="bg-white h-auto w-full py-[101px] px-[90px]">
+        <h1 class="text-xxl text-espresso font-helvetica font-thin">The Alertness Tradeoff</h1>
+        <div class="grid grid-cols-3">
+            <div class="col-span-2">
+
+            </div>
+            <div class="">
+                <img src="src\emotions.svg">
             </div>
         </div>
+        <div id="stressCoffee"></div>
+    </div>
 
-        <div class="bg-cream h-[109px] w-full py-[36px] px-[91px]">
-            <h1 class="text-center font-mono font-extrabold">Footer</h1>
-        </div>
-    </body>
+    <div class="bg-cream h-[109px] w-full py-[36px] px-[91px]">
+        <h1 class="text-center font-mono font-extrabold">Footer</h1>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+
 </html>
