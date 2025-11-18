@@ -26,9 +26,17 @@
 </head>
 
 <body>
-    <div class="bg-violet-200 h-[167px] w-full py-[36px] px-[91px]">
-        <h1 class="text-center font-mono font-extrabold">Header</h1>
-    </div>
+    <nav class="w-full flex justify-between items-center py-6 px-10 border-b border-gray-300">
+        <div class="flex space-x-10">
+            <span class="text-sm font-helvetica" style="color:#362822;">IAT 355 (Fall 2025)</span>
+            <span class="text-sm font-helvetica" style="color:#362822;">Caffeine Mugs</span>
+        </div>
+
+        <a href="index.html" class="px-4 py-2 rounded-lg font-helvetica text-sm hover:bg-[#F2E2C8] transition"
+            style="background-color:#F8EBD8; color:#362822;">
+            Home
+        </a>
+    </nav>
 
     <div class="bg-white h-auto w-full py-[101px] px-[90px]">
         <h1 class="text-xxl text-espresso font-helvetica font-thin">Caffeine vs Sleep Quality</h1>
@@ -43,11 +51,13 @@
         <div id="sleepQuality"></div>
     </div>
 
-    <div class="bg-cream h-[109px] w-full py-[36px] px-[91px]">
-        <h1 class="text-center font-mono font-extrabold">Footer</h1>
-    </div>
-
     <script src="main.js"></script>
 </body>
+
+<footer class="w-full flex justify-between items-center py-6 px-10 mt-20 text-sm font-helvetica"
+    style="background-color:#F8EBD8; color:#362822;">
+    <span>IAT 355 (Fall 2025) | Final Project</span>
+    <span>© 2025 Caffeine Mugs</span>
+</footer>
 
 </html>
