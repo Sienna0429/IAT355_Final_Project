@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <title>Caffeine Visualizations</title>
+
+    <style type="text/tailwindcss">
+        @theme {
+            --color-dark-blue: #1A3447;
+            --color-espresso: #362822;
+            --color-coffee: #F0C376;
+            --color-cream: #FAEDD6;
+            --font-helvetica: "Helvetica";
+        }
+    </style>
+
+    <!-- External CSS (optional, keep if you have it) -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body class="bg-white">
+
+    <!-- Navigation -->
+    <nav class="w-full flex justify-between items-center py-6 px-10 border-b border-gray-300">
+        <div class="flex space-x-10">
+            <span class="text-sm font-helvetica" style="color:#362822;">IAT 355 (Fall 2025)</span>
+            <span class="text-sm font-helvetica" style="color:#362822;">Caffeine Mugs</span>
+        </div>
+
+        <a href="index.html" class="px-4 py-2 rounded-lg font-helvetica text-sm hover:bg-[#F2E2C8] transition"
+            style="background-color:#F8EBD8; color:#362822;">
+            Home
+        </a>
+    </nav>
+
+
+    <!-- Main Content -->
+    <main class="w-full py-[80px] px-[90px] space-y-20">
+
+        <!-- Title Section -->
+        <div class="grid grid-cols-3 items-start">
+            <div class="col-span-2">
+                <a href="index.html">
+                    <img src="src/back-arrow.svg">
+                </a>
+
+                <h1 class="text-4xl font-helvetica text-espresso font-thin mt-10">
+                    Data Visualizations
+                </h1>
+
+                <p class="text-sm font-helvetica text-espresso/80 mt-4 max-w-3xl">
+                    Explore the relationships between caffeine intake, sleep, stress, and daily habits.
+                </p>
+            </div>
+
+            <div>
+                <img src="src/drinking-coffee.svg">
+            </div>
+        </div>
+
+
+
+        <!-- SECTION 1 -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-helvetica text-espresso font-semibold">
+                Coffee Intake by Age
+            </h2>
+            <div id="coffeeByAge" class="w-full"></div>
+        </section>
+
+        <!-- SECTION 2 -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-helvetica text-espresso font-semibold">
+                Top 10 Caffeine Consumers
+            </h2>
+            <div id="top10Caffeine" class="w-full"></div>
+        </section>
+
+        <!-- SECTION 3 -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-helvetica text-espresso font-semibold">
+                Lowest 10 Caffeine Consumers
+            </h2>
+            <div id="bottom10Caffeine" class="w-full"></div>
+        </section>
+
+        <!-- SECTION 4 -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-helvetica text-espresso font-semibold">
+                Stress Level and Coffee Intake
+            </h2>
+            <div id="stressCoffee" class="w-full"></div>
+        </section>
+
+        <!-- SECTION 5 -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-helvetica text-espresso font-semibold">
+                Coffee, Activity, and Age
+            </h2>
+            <div id="coffeeActivityByAgeSummary" class="w-full"></div>
+        </section>
+
+        <!-- SECTION 6 -->
+        <section class="space-y-4 pb-20">
+            <h2 class="text-2xl font-helvetica text-espresso font-semibold">
+                Caffeine Intake by Occupation
+            </h2>
+            <div id="caffeineOccupation" class="w-full"></div>
+        </section>
+
+        <!-- SECTION 7 -->
+        <section class="space-y-4 pb-20">
+            <h2 class="text-2xl font-helvetica text-espresso font-semibold">
+                Caffeine vs Sleep Hours
+            </h2>
+            <div id="sleepHours" class="w-full"></div>
+        </section>
+
+        <!-- SECTION 7 -->
+        <section class="space-y-4 pb-20">
+            <h2 class="text-2xl font-helvetica text-espresso font-semibold">
+                Caffeine vs Sleep Quality
+            </h2>
+            <div id="sleepQuality" class="w-full"></div>
+        </section>
+
+    </main>
+
+
+    <!-- Footer Home Button -->
+    <div class="py-[59px] px-[89px] flex flex-col items-center">
+        <a href="index.html"
+            class="w-40 text-center px-8 py-3 rounded-lg font-helvetica text-sm hover:bg-[#F2E2C8] transition"
+            style="background-color:#1A3447; color:#FAEDD6;">
+            Home
+        </a>
+    </div>
+
+
+    <!-- Vega scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <!-- Your JS -->
+    <script src="main.js"></script>
+
+</body>
+
+</html>
