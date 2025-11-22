@@ -610,6 +610,116 @@ const coffeeReasonsSpec = {
 vegaEmbed("#chart_coffee_reasons", coffeeReasonsSpec);
 
 
+const coffeeSideEffectsSpec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+
+    description: "Coffee Side Effects",
+
+    data: {
+        values: [
+            { Effect: "None", Percent: 60.8 },
+            { Effect: "Jittery or Shaking", Percent: 17.0 },
+            { Effect: "Difficulty Sleeping", Percent: 16.5 },
+            { Effect: "Headache", Percent: 11.5 },
+            { Effect: "Fast Heartbeat", Percent: 10.5 },
+            { Effect: "\"Jolt and Crash\" Episodes", Percent: 9.7 },
+            { Effect: "Nausea, Vomiting, or Diarrhea", Percent: 5.1 },
+            { Effect: "Chest Pain", Percent: 1.7 },
+            { Effect: "Other", Percent: 1.5 },
+            { Effect: "Dental Pain", Percent: 0.8 },
+            { Effect: "Decreased Sexual Performance", Percent: 0.3 },
+            { Effect: "Seizures", Percent: 0.2 },
+            { Effect: "Don't Know, Refuse to Answer", Percent: 2.9 }
+        ]
+    },
+
+    transform: [
+        { calculate: "datum.Percent + '%'", as: "Percent_Label" }
+    ],
+
+    width: 650,
+    height: 320,
+
+    title: {
+        text: "Coffee Side Effects",
+        anchor: "start",
+        fontSize: 20,
+        color: "#362822",
+        fontWeight: "bold",
+        dy: -10
+    },
+
+    layer: [
+
+        {
+            mark: {
+                type: "bar",
+                cornerRadius: 3
+            },
+            encoding: {
+                y: {
+                    field: "Effect",
+                    type: "nominal",
+                    sort: "-x",
+                    axis: {
+                        title: null,
+                        labelFontSize: 12,
+                        labelColor: "#362822",
+                        labelPadding: 8
+                    }
+                },
+                x: {
+                    field: "Percent",
+                    type: "quantitative",
+                    axis: null
+                    // {
+                    //     title: "Percentage of People",
+                    //     titleColor: "#362822",
+                    //     titleFontSize: 12,
+                    //     labels: false,
+                    //     ticks: false,
+                    //     grid: false,
+                    //     domain: false
+                    // }
+                },
+                color: { value: "#362822" },
+                tooltip: [
+                    { field: "Effect", title: "Side Effect" },
+                    { field: "Percent", title: "Percentage", format: ".1f" }
+                ]
+            }
+        },
+
+
+        {
+            mark: {
+                type: "text",
+                align: "left",
+                baseline: "middle",
+                dx: 5,
+                fontSize: 11,
+                color: "#362822"
+            },
+            encoding: {
+                y: { field: "Effect", type: "nominal", sort: "-x" },
+                x: { field: "Percent", type: "quantitative" },
+                text: { field: "Percent_Label" }
+            }
+        }
+    ],
+
+    config: {
+        view: { stroke: null },
+        axis: {
+            domain: false,
+            grid: false,
+            ticks: false
+        }
+    }
+};
+
+
+vegaEmbed("#coffeeSideEffects", coffeeSideEffectsSpec);
 
 
 
