@@ -1,7 +1,7 @@
 const spec = {
     data: { url: "caffeine.csv" },
-    width: 500,
-    height: 350,
+    width: 800,
+    height: 650,
     mark: "circle",
 
     selection: {
@@ -56,8 +56,8 @@ const sleepQualityStackedSpec = {
     data: { url: "caffeine.csv" },
 
     mark: "bar",
-    width: 500,
-    height: 350,
+    width: 800,
+    height: 650,
 
     encoding: {
         x: {
@@ -81,7 +81,10 @@ const sleepQualityStackedSpec = {
             field: "Sleep_Quality",
             type: "nominal",
             title: "Sleep quality",
-            sort: ["Poor", "Fair", "Good", "Excellent"]
+            sort: ["Poor", "Fair", "Good", "Excellent"],
+            scale: {
+                range: ["#614033", "#F0DEBB", "#BE9757", "#D26946"]
+            }
         },
 
         tooltip: [
@@ -111,8 +114,8 @@ const coffeeByAgeSpec = {
         point: true
     },
 
-    width: 500,
-    height: 350,
+    width: 800,
+    height: 650,
 
     encoding: {
         x: {
@@ -191,8 +194,8 @@ const top10CaffeineSpec = {
         size: 100
     },
 
-    width: 500,
-    height: 350,
+    width: 800,
+    height: 650,
 
     encoding: {
         x: {
@@ -249,8 +252,8 @@ const bottom10CaffeineSpec = {
         size: 100
     },
 
-    width: 500,
-    height: 350,
+    width: 800,
+    height: 650,
 
     encoding: {
         x: {
@@ -290,8 +293,8 @@ vegaEmbed("#bottom10Caffeine", bottom10CaffeineSpec);
 const stressCoffeeSpec = {
     data: { url: "caffeine.csv" },
 
-    width: 500,
-    height: 350,
+    width: 800,
+    height: 650,
 
     layer: [
         {
@@ -332,7 +335,13 @@ const stressCoffeeSpec = {
                     field: "Coffee_Intake",
                     type: "quantitative"
                 },
-                color: { field: "Stress_Level", type: "nominal" },
+                color: {
+                    field: "Stress_Level",
+                    type: "nominal",
+                    scale: {
+                        range: ["#4C3932", "#183348", "#7A2E21"]
+                    }
+                },
                 tooltip: [
                     { field: "Stress_Level", type: "nominal" },
                     { field: "Coffee_Intake", type: "quantitative", format: ".1f" },
@@ -368,8 +377,8 @@ const coffeeActivityByAgeSummarySpec = {
 
 
     spec: {
-        width: 220,
-        height: 180,
+        width: 320,
+        height: 280,
 
         mark: {
             type: "line",
@@ -444,8 +453,8 @@ const caffeineOccupationSpec = {
         size: 100
     },
 
-    width: 500,
-    height: 350,
+    width: 800,
+    height: 650,
 
     encoding: {
         x: {
@@ -481,6 +490,126 @@ const caffeineOccupationSpec = {
 };
 
 vegaEmbed("#caffeineOccupation", caffeineOccupationSpec);
+
+const coffeeReasonsSpec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+
+    // background: "#FDE9D8",
+
+    data: {
+        values: [
+            { Reason: "Enjoys the Taste", Percent: 83.1 },
+            { Reason: "Increases Energy", Percent: 67.1 },
+            { Reason: "Increases Productivity", Percent: 42.7 },
+            { Reason: "Healthy", Percent: 28.5 },
+            { Reason: "Suppresses Appetite", Percent: 20.2 },
+            { Reason: "Others", Percent: 10.0 },
+            { Reason: "None of the Above", Percent: 1.6 }
+        ]
+    },
+
+    transform: [
+        {
+            calculate: "datum.Percent + '%'",
+            as: "Percent_Label"
+        }
+    ],
+
+    width: 600,
+    height: 260,
+
+    // title: {
+    //     text: "Top Reasons for Drinking Coffee",
+    //     anchor: "start",
+    //     fontSize: 24,
+    //     color: "#4A2B18",
+    //     fontWeight: "bold",
+    //     dy: -10
+    // },
+
+    layer: [
+        {
+            mark: {
+                type: "bar",
+                cornerRadius: 3
+            },
+            encoding: {
+                y: {
+                    field: "Reason",
+                    type: "nominal",
+                    sort: "-x",
+                    title: null,
+                    axis: {
+                        labelFontSize: 13,
+                        labelColor: "#4A2B18"
+                    }
+                },
+                x: {
+                    field: "Percent",
+                    type: "quantitative",
+                    title: null,
+                    axis: {
+                        grid: false,
+                        ticks: false,
+                        labels: false
+                    }
+                },
+                color: {
+                    value: "#362822"
+                },
+                tooltip: [
+                    { field: "Reason", title: "Reason" },
+                    { field: "Percent", title: "Percent", format: ".1f" }
+                ]
+            }
+        },
+
+        {
+            mark: {
+                type: "text",
+                align: "left",
+                baseline: "middle",
+                dx: 5,
+                fontSize: 12,
+                color: "#362822"
+            },
+            encoding: {
+                y: {
+                    field: "Reason",
+                    type: "nominal",
+                    sort: "-x",
+                    axis: {
+                        labelFontSize: 13,
+                        labelColor: "#4A2B18",
+                        labelPadding: 15
+                    }
+                },
+                x: {
+                    field: "Percent",
+                    type: "quantitative"
+                },
+                text: {
+                    field: "Percent_Label",
+                    type: "nominal"
+                }
+            }
+        }
+    ],
+
+    config: {
+        view: { stroke: null },
+        axis: {
+            domain: false,
+            grid: false,
+            ticks: false
+        }
+    }
+
+};
+
+vegaEmbed("#chart_coffee_reasons", coffeeReasonsSpec);
+
+
 
 
 
