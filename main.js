@@ -203,8 +203,8 @@ const sleepQualityJitterSpec = {
 
     data: { url: "caffeine.csv" },
 
-    width: 800,
-    height: 300,
+    width: 900,
+    height: 700,
 
     transform: [
         {
