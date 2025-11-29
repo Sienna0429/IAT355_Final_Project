@@ -684,17 +684,17 @@ const coffeeReasonsSpec = {
         }
     ],
 
-    width: 600,
-    height: { step: 28 },
+    width: 800,
+    height: { step: 48 },
 
-    title: {
-        text: "Top Reasons for Drinking Coffee",
-        anchor: "start",
-        fontSize: 24,
-        color: "#362822",
-        fontWeight: "normal",
-        dy: -20
-    },
+    // title: {
+    //     text: "Top Reasons for Drinking Coffee",
+    //     anchor: "start",
+    //     fontSize: 24,
+    //     color: "#362822",
+    //     fontWeight: "normal",
+    //     dy: -20
+    // },
 
     layer: [
         {
@@ -709,7 +709,7 @@ const coffeeReasonsSpec = {
                     sort: "-x",
                     title: null,
                     axis: {
-                        labelFontSize: 13,
+                        labelFontSize: 14,
                         labelColor: "#4A2B18"
                     }
                 },

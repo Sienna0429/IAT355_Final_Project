@@ -21,6 +21,7 @@
                 --text-xxl: 7rem; 
                 --text-xl: 4rem;
                 --text-xxl2: 5rem;
+                --text-l: 2.5rem;
                 --font-helvetica: "Helvetica"
             }
         </style>
@@ -41,52 +42,434 @@
 
     <div class="bg-white h-auto w-full py-[101px] px-[90px]">
         <a href="index.html">
-            <img src="src/back-arrow.svg">
+            <img src="src/back-arrow.svg" alt="Back to home">
         </a>
 
-        <div class="grid grid-cols-6">
+        <div class="grid grid-cols-6 mt-6">
             <div class="col-span-5 pr-[10vw]">
-                <h1 class="text-xxl2 text-espresso font-helvetica font-thin">Reflect On Your Health</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien
-                    vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus
-                    leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum
-                    egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
-                    vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+                <h1 class="text-xxl2 text-espresso font-helvetica font-thin mb-4">
+                    Reflect On Your Health
+                </h1>
+                <p class="text-base font-helvetica text-espresso leading-relaxed">
+                    Now it is time to reflect on what you have learned about caffeine and your health.
+                    Use the dashboard below and enter how many cups of coffee you drink per day
+                    and how many hours you usually sleep. You will see how your patterns compare
+                    to the people in our dataset.
+                </p>
             </div>
-            <div class="">
-                <img src="src\drinking-coffee.svg">
+            <div class="flex justify-end items-start">
+                <img src="src/drinking-coffee.svg" alt="Person drinking coffee">
             </div>
         </div>
+    </div>
 
+    <!-- Input & Result -->
+    <div class="w-full px-[90px] pb-[80px]">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <!-- Left Input -->
+            <div class="rounded-3xl border border-[#E5D2B5] bg-[#FFF9EF] p-8 shadow-sm">
+                <h2 class="text-l font-helvetica text-espresso mb-4">
+                    Enter your daily habits
+                </h2>
+
+                <form id="healthForm" class="space-y-6" onsubmit="event.preventDefault(); analyzeHealth();">
+                    <!-- Gender -->
+                    <div>
+                        <label for="genderInput" class="block text-sm font-helvetica text-espresso mb-2">
+                            Gender
+                        </label>
+                        <select id="genderInput"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Age -->
+                    <div>
+                        <label for="ageInput" class="block text-sm font-helvetica text-espresso mb-2">
+                            Age
+                        </label>
+                        <input id="ageInput" type="number" min="15" max="90" step="1" placeholder="For example 26"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
+                    </div>
+
+                    <!-- Coffee intake -->
+                    <div>
+                        <label for="coffeeInput" class="block text-sm font-helvetica text-espresso mb-2">
+                            Cups of coffee per day
+                        </label>
+                        <input id="coffeeInput" type="number" min="0" max="15" step="0.1" placeholder="For example 2.5"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
+                    </div>
+
+                    <!-- Sleep hours -->
+                    <div>
+                        <label for="sleepInput" class="block text-sm font-helvetica text-espresso mb-2">
+                            Sleep hours per night
+                        </label>
+                        <input id="sleepInput" type="number" min="0" max="14" step="0.1" placeholder="For example 7.0"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
+                    </div>
+
+                    <!-- Stress level -->
+                    <div>
+                        <label for="stressInput" class="block text-sm font-helvetica text-espresso mb-2">
+                            Stress level (self rated)
+                        </label>
+                        <select id="stressInput"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
+                            <option value="">Select one</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+
+
+                    <button type="submit"
+                        class="mt-4 inline-flex items-center justify-center rounded-[25px] px-8 py-3 bg-[#1E2E3E] text-white text-sm font-helvetica transition-all duration-300 hover:shadow-[-6px_6px_0_#E9C98F] active:bg-[#E9C98F] active:text-[#362822] active:border active:border-[#4A2B18] active:shadow-none active:scale-95">
+                        Reflect with the dataset
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right Result -->
+            <div id="resultCard"
+                class="rounded-3xl border border-[#E5D2B5] bg-white p-8 shadow-sm flex flex-col justify-between">
+                <div>
+                    <h2 class="text-l font-helvetica text-espresso mb-4">
+                        Your position in the dataset
+                    </h2>
+
+                    <p id="loadingMessage" class="text-sm font-helvetica text-gray-500 mb-6">
+                        Loading dataset. Please wait a moment before submitting your information.
+                    </p>
+
+                    <div id="vizContainer" class="space-y-8 hidden">
+                        <!-- Legent -->
+                        <div class="flex items-center space-x-6 mb-6">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-6 rounded-full bg-[#1E2E3E]"></div>
+                                <span class="text-sm font-helvetica text-espresso">You</span>
+                            </div>
+
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-6 rounded-full bg-[#362822]"></div>
+                                <span class="text-sm font-helvetica text-espresso">Group average</span>
+                            </div>
+                        </div>
+
+
+                        <p id="summaryText" class="text-sm font-helvetica text-espresso leading-relaxed"></p>
+
+                        <!-- Coffee Bar -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-baseline">
+                                <span class="text-sm font-helvetica text-espresso">
+                                    Daily coffee intake
+                                </span>
+                                <span id="coffeeLabel" class="text-xs font-helvetica text-gray-500"></span>
+                            </div>
+                            <div class="relative h-4 rounded-full bg-[#F2E2C8] overflow-hidden">
+                                <!-- Your Position -->
+                                <div class="absolute flex flex-col items-center" id="coffeeYouWrap" style="top:-24px;">
+                                    <span class="text-[10px] font-helvetica text-[#1E2E3E] mb-1">You</span>
+                                    <div id="coffeeYou" class="h-6 w-[3px] bg-[#1E2E3E] rounded-full"></div>
+                                </div>
+
+                                <!-- Avg Position -->
+                                <div class="absolute flex flex-col items-center" id="coffeeAvgWrap" style="top:-24px;">
+                                    <span class="text-[10px] font-helvetica text-[#362822] mb-1">Avg</span>
+                                    <div id="coffeeAvg" class="h-6 w-[3px] bg-[#362822] rounded-full"></div>
+                                </div>
+
+                            </div>
+                            <div class="flex justify-between text-[11px] font-helvetica text-gray-500">
+                                <span>Lower intake</span>
+                                <span>Higher intake</span>
+                            </div>
+                        </div>
+
+                        <!-- Sleep Bar -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-baseline">
+                                <span class="text-sm font-helvetica text-espresso">
+                                    Sleep hours per night
+                                </span>
+                                <span id="sleepLabel" class="text-xs font-helvetica text-gray-500"></span>
+                            </div>
+                            <div class="relative h-4 rounded-full bg-[#F2E2C8] overflow-hidden">
+                                <!-- Your Position -->
+                                <div class="absolute flex flex-col items-center" id="sleepYouWrap" style="top:-24px;">
+                                    <span class="text-[10px] font-helvetica text-[#1E2E3E] mb-1">You</span>
+                                    <div id="sleepYou" class="h-6 w-[3px] bg-[#1E2E3E] rounded-full"></div>
+                                </div>
+
+                                <!-- Avg Position -->
+                                <div class="absolute flex flex-col items-center" id="sleepAvgWrap" style="top:-24px;">
+                                    <span class="text-[10px] font-helvetica text-[#362822] mb-1">Avg</span>
+                                    <div id="sleepAvg" class="h-6 w-[3px] bg-[#362822] rounded-full"></div>
+                                </div>
+
+                            </div>
+                            <div class="flex justify-between text-[11px] font-helvetica text-gray-500">
+                                <span>Less sleep</span>
+                                <span>More sleep</span>
+                            </div>
+                        </div>
+
+                        <!-- Stress Bar -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-baseline">
+                                <span class="text-sm font-helvetica text-espresso">
+                                    Stress level (self rated)
+                                </span>
+                                <span id="stressLabel" class="text-xs font-helvetica text-gray-500"></span>
+                            </div>
+                            <div class="relative h-4 rounded-full bg-[#F2E2C8] overflow-hidden">
+                                <!-- Background Segmentation -->
+                                <div class="absolute inset-y-0 left-0 w-1/3 border-r border-white/60"></div>
+                                <div class="absolute inset-y-0 left-1/3 w-1/3 border-r border-white/60"></div>
+                                <!-- Your Position -->
+                                <div class="absolute flex flex-col items-center" id="stressYouWrap" style="top:-24px;">
+                                    <span class="text-[10px] font-helvetica text-[#1E2E3E] mb-1">You</span>
+                                    <div id="stressYou" class="h-6 w-[3px] bg-[#1E2E3E] rounded-full"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-[11px] font-helvetica text-gray-500">
+                                <span>Low</span>
+                                <span>Medium</span>
+                                <span>High</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="mt-6 text-xs font-helvetica text-gray-500">
+                    This dashboard is for reflection only. It is based on patterns in the dataset and does not
+                    provide medical advice.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="py-[40px] px-[90px] flex justify-center items-center">
+        <a href="index.html"
+            class="inline-flex items-center justify-center relative rounded-[25px] px-12 py-6 bg-[#1E2E3E] text-white text-button font-helvetica transition-all duration-300 hover:shadow-[-8px_8px_0_#E9C98F] active:bg-[#E9C98F] active:text-[#362822] active:border active:border-[#4A2B18] active:shadow-none active:scale-95">
+            Back to Home
+        </a>
+    </div>
+
+    <!-- Tooltip -->
+    <div id="tooltip"
+        class="absolute px-2 py-1 text-xs font-helvetica bg-[#362822] text-white rounded hidden pointer-events-none"
+        style="z-index:999; transform:translate(-50%, -120%);">
     </div>
 
     <script src="main.js"></script>
-    <div class="py-[60px] px-[90px] flex justify-center items-center">
-        <a href="index.html" class="
-                                inline-flex
-                                items-center
-                                justify-center
-                                relative
-                                rounded-[25px]
-                                px-12 py-6
-                                bg-[#1E2E3E]
-                                text-white
-                                text-button
-                                font-helvetica
-                                transition-all
-                                duration-300
-                                hover:shadow-[-8px_8px_0_#E9C98F]
-                                active:bg-[#E9C98F]
-                                active:text-[#362822]
-                                active:border active:border-[#4A2B18]
-                                active:shadow-none
-                                active:scale-95
-                              ">
-            Home
-        </a>
-    </div>
+
+    <script>
+        let caffeineData = [];
+        let dataLoaded = false;
+
+        // Read caffeine.csv
+        fetch("caffeine.csv")
+            .then(response => response.text())
+            .then(text => {
+                const lines = text.trim().split("\n");
+                const headers = lines[0].split(",");
+                caffeineData = lines.slice(1).map(line => {
+                    const values = line.split(",");
+                    const row = {};
+                    headers.forEach((h, i) => {
+                        const key = h.trim();
+                        const value = values[i] ? values[i].trim() : "";
+                        const num = Number(value);
+                        row[key] = isNaN(num) ? value : num;
+                    });
+                    return row;
+                });
+
+                dataLoaded = true;
+                document.getElementById("loadingMessage").innerText =
+                    "Dataset loaded. Enter your information and see how you compare.";
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById("loadingMessage").innerText =
+                    "Could not load the dataset. Please check the file path.";
+            });
+
+        // Percentile
+        function getPercentile(values, x) {
+            const filtered = values.filter(v => typeof v === "number" && !isNaN(v));
+            if (!filtered.length) return null;
+            filtered.sort((a, b) => a - b);
+            const count = filtered.filter(v => v <= x).length;
+            return Math.round((count / filtered.length) * 100);
+        }
+
+        // Map the value to a 0–100 percent range to control the left position
+        function getPosition(values, x) {
+            const filtered = values.filter(v => typeof v === "number" && !isNaN(v));
+            if (!filtered.length) return 50;
+            const min = Math.min(...filtered);
+            const max = Math.max(...filtered);
+            if (max === min) return 50;
+            const t = (x - min) / (max - min);
+            return Math.max(0, Math.min(100, t * 100));
+        }
+
+        // Map stress levels to fixed positions: 0, 50, and 90 percent.
+        function stressToPos(level) {
+            if (level === "Low") return 10;
+            if (level === "Medium") return 50;
+            if (level === "High") return 90;
+            return 50;
+        }
+
+        // Tooltip
+        const tooltip = document.getElementById("tooltip");
+
+
+        function attachTooltip(targetId, text) {
+            const target = document.getElementById(targetId);
+            if (!target) return;
+            const wrapper = target.parentElement;
+            if (!wrapper) return;
+
+
+            wrapper.dataset.tooltipText = text;
+
+
+            if (wrapper.dataset.tooltipAttached === "true") {
+                return;
+            }
+            wrapper.dataset.tooltipAttached = "true";
+
+            wrapper.addEventListener("mouseenter", () => {
+                tooltip.innerText = wrapper.dataset.tooltipText || "";
+                tooltip.classList.remove("hidden");
+            });
+
+            wrapper.addEventListener("mouseleave", () => {
+                tooltip.classList.add("hidden");
+            });
+
+            wrapper.addEventListener("mousemove", (e) => {
+                tooltip.style.left = e.pageX + "px";
+                tooltip.style.top = e.pageY + "px";
+                tooltip.innerText = wrapper.dataset.tooltipText || "";
+            });
+        }
+
+        function analyzeHealth() {
+            if (!dataLoaded) {
+                alert("Dataset is still loading. Please try again in a moment.");
+                return;
+            }
+
+            const gender = document.getElementById("genderInput").value;
+            const age = Number(document.getElementById("ageInput").value);
+            const cups = Number(document.getElementById("coffeeInput").value);
+            const sleep = Number(document.getElementById("sleepInput").value);
+            const stressSelf = document.getElementById("stressInput").value;
+
+            if (!age || isNaN(cups) || isNaN(sleep)) {
+                alert("Please fill in age, coffee intake and sleep hours.");
+                return;
+            }
+
+            let group = caffeineData;
+            if (gender) {
+                const filtered = caffeineData.filter(d => d.Gender === gender);
+                if (filtered.length > 30) {
+                    group = filtered;
+                }
+            }
+
+            const intakeValues = group.map(d => d.Coffee_Intake);
+            const sleepValues = group.map(d => d.Sleep_Hours);
+
+            const coffeePct = getPercentile(intakeValues, cups);
+            const sleepPct = getPercentile(sleepValues, sleep);
+
+            const avgCoffee = intakeValues.reduce((a, b) => a + b, 0) / intakeValues.length;
+            const avgSleep = sleepValues.reduce((a, b) => a + b, 0) / sleepValues.length;
+
+
+            const summaryParts = [];
+            summaryParts.push(
+                `You are ${age} years old and reported ${cups.toFixed(1)} cups of coffee per day with ${sleep.toFixed(1)} hours of sleep.`
+            );
+            if (gender) {
+                summaryParts.push(
+                    `The visualisation uses people of the same gender when there are enough records, otherwise it uses the full dataset.`
+                );
+            } else {
+                summaryParts.push(`The visualisation uses the full dataset.`);
+            }
+
+            document.getElementById("summaryText").innerText = summaryParts.join(" ");
+
+            // Position Calculate: coffee
+            const coffeePosYou = getPosition(intakeValues, cups);
+            const coffeePosAvg = getPosition(intakeValues, avgCoffee);
+            document.getElementById("coffeeYouWrap").style.left = coffeePosYou + "%";
+            document.getElementById("coffeeAvgWrap").style.left = coffeePosAvg + "%";
+
+            const coffeeLabelText = coffeePct != null
+                ? `${cups.toFixed(1)} cups • higher than about ${coffeePct}% of this group`
+                : `${cups.toFixed(1)} cups`;
+            document.getElementById("coffeeLabel").innerText = coffeeLabelText;
+
+            // Position Calculate: sleep
+            const sleepPosYou = getPosition(sleepValues, sleep);
+            const sleepPosAvg = getPosition(sleepValues, avgSleep);
+            document.getElementById("sleepYouWrap").style.left = sleepPosYou + "%";
+            document.getElementById("sleepAvgWrap").style.left = sleepPosAvg + "%";
+
+            const sleepLabelText = sleepPct != null
+                ? `${sleep.toFixed(1)} hours • higher than about ${sleepPct}% of this group`
+                : `${sleep.toFixed(1)} hours`;
+            document.getElementById("sleepLabel").innerText = sleepLabelText;
+
+            // Stress Position
+            const stressPos = stressToPos(stressSelf);
+            document.getElementById("stressYouWrap").style.left = stressPos + "%";
+            document.getElementById("stressLabel").innerText =
+                stressSelf ? `You selected: ${stressSelf}` : `No stress level selected`;
+
+            if (coffeePct != null) {
+                attachTooltip("coffeeYou", `${coffeePct}% of people drink less than or equal to you`);
+            } else {
+                attachTooltip("coffeeYou", `Your coffee intake: ${cups.toFixed(1)} cups/day`);
+            }
+            attachTooltip("coffeeAvg", `Group average: ${avgCoffee.toFixed(1)} cups/day`);
+
+            if (sleepPct != null) {
+                attachTooltip("sleepYou", `${sleepPct}% of people sleep less than or equal to you`);
+            } else {
+                attachTooltip("sleepYou", `Your sleep: ${sleep.toFixed(1)} hours`);
+            }
+            attachTooltip("sleepAvg", `Group average: ${avgSleep.toFixed(1)} hours`);
+
+            attachTooltip("stressYou", `Your stress level: ${stressSelf || "Not selected"}`);
+
+            document.getElementById("loadingMessage").classList.add("hidden");
+            document.getElementById("vizContainer").classList.remove("hidden");
+        }
+    </script>
+
+
+
 
 </body>
+
 
 <footer class="w-full flex justify-between items-center py-6 px-10 mt-20 text-sm font-helvetica"
     style="background-color:#F8EBD8; color:#362822;">
