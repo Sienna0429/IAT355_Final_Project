@@ -116,15 +116,11 @@
                     <!-- Stress level -->
                     <div>
                         <label for="stressInput" class="block text-sm font-helvetica text-espresso mb-2">
-                            Stress level (self rated)
+                            Stress level (1–10, self rated)
                         </label>
-                        <select id="stressInput"
+                        <input id="stressInput" type="number" min="1" max="10" step="1" placeholder="For example 7"
                             class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
-                            <option value="">Select one</option>
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
-                        </select>
+
                     </div>
 
 
@@ -332,17 +328,23 @@
             return Math.max(0, Math.min(100, t * 100));
         }
 
-        // Map stress levels to fixed positions: 0, 50, and 90 percent.
-        function stressToPos(level) {
-            if (level === "Low") return 10;
-            if (level === "Medium") return 50;
-            if (level === "High") return 90;
-            return 50;
+        // Map dataset stress levels (Low/Medium/High) to representative scores
+        function levelToScore(level) {
+            if (level === "Low") return 3;
+            if (level === "Medium") return 6;
+            if (level === "High") return 9;
+            return 6; // default to middle
+        }
+
+        // Map a 1–10 stress score to a 0–100 percent position on the axis
+        function stressScoreToPos(score) {
+            if (isNaN(score)) return 50;
+            const t = (score - 1) / 9; // 1–10 → 0–1
+            return Math.max(0, Math.min(100, t * 100));
         }
 
         // Tooltip
         const tooltip = document.getElementById("tooltip");
-
 
         function attachTooltip(targetId, text) {
             const target = document.getElementById(targetId);
@@ -350,10 +352,10 @@
             const wrapper = target.parentElement;
             if (!wrapper) return;
 
-
+            // store text so it can be updated later
             wrapper.dataset.tooltipText = text;
 
-
+            // only bind events once
             if (wrapper.dataset.tooltipAttached === "true") {
                 return;
             }
@@ -385,13 +387,14 @@
             const age = Number(document.getElementById("ageInput").value);
             const cups = Number(document.getElementById("coffeeInput").value);
             const sleep = Number(document.getElementById("sleepInput").value);
-            const stressSelf = document.getElementById("stressInput").value;
+            const stressScore = Number(document.getElementById("stressInput").value); // 1–10
 
-            if (!age || isNaN(cups) || isNaN(sleep)) {
-                alert("Please fill in age, coffee intake and sleep hours.");
+            if (!age || isNaN(cups) || isNaN(sleep) || isNaN(stressScore)) {
+                alert("Please fill in age, coffee intake, sleep hours, and stress level.");
                 return;
             }
 
+            // base group: whole dataset or same-gender subset
             let group = caffeineData;
             if (gender) {
                 const filtered = caffeineData.filter(d => d.Gender === gender);
@@ -409,7 +412,7 @@
             const avgCoffee = intakeValues.reduce((a, b) => a + b, 0) / intakeValues.length;
             const avgSleep = sleepValues.reduce((a, b) => a + b, 0) / sleepValues.length;
 
-
+            // summary text
             const summaryParts = [];
             summaryParts.push(
                 `You are ${age} years old and reported ${cups.toFixed(1)} cups of coffee per day with ${sleep.toFixed(1)} hours of sleep.`
@@ -421,10 +424,9 @@
             } else {
                 summaryParts.push(`The visualisation uses the full dataset.`);
             }
-
             document.getElementById("summaryText").innerText = summaryParts.join(" ");
 
-            // Position Calculate: coffee
+            // Position: coffee
             const coffeePosYou = getPosition(intakeValues, cups);
             const coffeePosAvg = getPosition(intakeValues, avgCoffee);
             document.getElementById("coffeeYouWrap").style.left = coffeePosYou + "%";
@@ -435,7 +437,7 @@
                 : `${cups.toFixed(1)} cups`;
             document.getElementById("coffeeLabel").innerText = coffeeLabelText;
 
-            // Position Calculate: sleep
+            // Position: sleep
             const sleepPosYou = getPosition(sleepValues, sleep);
             const sleepPosAvg = getPosition(sleepValues, avgSleep);
             document.getElementById("sleepYouWrap").style.left = sleepPosYou + "%";
@@ -446,12 +448,46 @@
                 : `${sleep.toFixed(1)} hours`;
             document.getElementById("sleepLabel").innerText = sleepLabelText;
 
-            // Stress Position
-            const stressPos = stressToPos(stressSelf);
-            document.getElementById("stressYouWrap").style.left = stressPos + "%";
-            document.getElementById("stressLabel").innerText =
-                stressSelf ? `You selected: ${stressSelf}` : `No stress level selected`;
+            // ----- Stress: compare within similar coffee intake group -----
 
+            // people with similar coffee intake (±1 cup)
+            const similarCoffeeGroup = group.filter(d =>
+                typeof d.Coffee_Intake === "number" &&
+                !isNaN(d.Coffee_Intake) &&
+                Math.abs(d.Coffee_Intake - cups) <= 1
+            );
+            const stressGroup = similarCoffeeGroup.length >= 30 ? similarCoffeeGroup : group;
+
+            const stressValues = stressGroup
+                .map(d => levelToScore(d.Stress_Level))
+                .filter(v => typeof v === "number" && !isNaN(v));
+
+            let stressLabel = "";
+            let stressComparison = "";
+            if (stressValues.length > 0) {
+                const avgStress = stressValues.reduce((a, b) => a + b, 0) / stressValues.length;
+                const stressPct = getPercentile(stressValues, stressScore); // use 1–10 vs 3/6/9
+
+                if (stressPct > 66) {
+                    stressComparison = "higher than most people with a similar coffee intake";
+                } else if (stressPct < 33) {
+                    stressComparison = "lower than many people with a similar coffee intake";
+                } else {
+                    stressComparison = "similar to most people with a similar coffee intake";
+                }
+
+                stressLabel =
+                    `You rated ${stressScore}/10 • your stress is ${stressComparison}.`;
+            } else {
+                stressLabel = `You rated ${stressScore}/10 • we could not find enough similar records to compare.`;
+            }
+
+            // position marker on the stress bar using 1–10 score
+            const stressPos = stressScoreToPos(stressScore);
+            document.getElementById("stressYouWrap").style.left = stressPos + "%";
+            document.getElementById("stressLabel").innerText = stressLabel;
+
+            // Tooltips
             if (coffeePct != null) {
                 attachTooltip("coffeeYou", `${coffeePct}% of people drink less than or equal to you`);
             } else {
@@ -466,12 +502,14 @@
             }
             attachTooltip("sleepAvg", `Group average: ${avgSleep.toFixed(1)} hours`);
 
-            attachTooltip("stressYou", `Your stress level: ${stressSelf || "Not selected"}`);
+            attachTooltip("stressYou", `Your stress: ${stressScore}/10${stressComparison ? " • " + stressComparison : ""}`);
 
+            // show visualisation
             document.getElementById("loadingMessage").classList.add("hidden");
             document.getElementById("vizContainer").classList.remove("hidden");
         }
     </script>
+
 
 
 
