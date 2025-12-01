@@ -1,8 +1,12 @@
-const spec = {
+// Base spec without fixed width/height
+const baseSpec = {
     data: { url: "caffeine.csv" },
-    width: 800,
-    height: 650,
     mark: "circle",
+
+    autosize: {
+        type: "fit",
+        contains: "padding"
+    },
 
     selection: {
         genderSel: {
@@ -50,7 +54,44 @@ const spec = {
     }
 };
 
-vegaEmbed("#sleepHours", spec);
+// Render function to make chart responsive
+function renderSleepChart() {
+    const container = document.getElementById("sleepHours");
+
+    if (!container) return;
+
+    // Get current container width
+    const containerWidth = container.clientWidth || 600;
+
+    // Set an aspect ratio for height
+    const aspectRatio = 0.6; // height = 60% of width
+    let chartHeight = containerWidth * aspectRatio;
+
+    // Optional: clamp min/max height
+    chartHeight = Math.max(250, Math.min(chartHeight, 600));
+
+    // Create a new spec with dynamic width and height
+    const spec = {
+        ...baseSpec,
+        width: containerWidth,
+        height: chartHeight
+    };
+
+    // Embed chart
+    vegaEmbed("#sleepHours", spec, { actions: false });
+}
+
+// Initial render
+renderSleepChart();
+
+// Re-render on window resize (with small debounce)
+let sleepResizeTimer;
+window.addEventListener("resize", () => {
+    clearTimeout(sleepResizeTimer);
+    sleepResizeTimer = setTimeout(renderSleepChart, 200);
+});
+
+
 
 // const sleepQualityStackedSpec = {
 //     data: { url: "caffeine.csv" },
@@ -198,16 +239,17 @@ const sleepQualityHeatmapSpec = {
 
 vegaEmbed("#sleepQuality", sleepQualityHeatmapSpec);
 
-const sleepQualityJitterSpec = {
+// Base spec without fixed width/height
+const sleepQualityBaseSpec = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
 
     data: { url: "caffeine.csv" },
 
-    width: 900,
-    height: 700,
+    // width and height will be added dynamically in render function
 
     transform: [
         {
+            // Add jitter to spread points vertically within each category
             calculate: "(random() - 0.5) * 14",
             as: "jitter"
         }
@@ -263,7 +305,48 @@ const sleepQualityJitterSpec = {
     }
 };
 
-vegaEmbed("#sleepQualityScatter", sleepQualityJitterSpec);
+// Render function for responsive width and height
+function renderSleepQualityChart() {
+    const container = document.getElementById("sleepQualityScatter");
+    if (!container) return;
+
+    // Get current container width
+    let containerWidth = container.clientWidth || 900;
+
+    // Limit max width for readability (similar to original 900px)
+    const maxWidth = 900;
+    const chartWidth = Math.min(containerWidth, maxWidth);
+
+    // Keep similar aspect ratio as original 900x700 (height ≈ 0.78 * width)
+    const aspectRatio = 700 / 900;
+    let chartHeight = chartWidth * aspectRatio;
+
+    // Clamp height so it does not get too small or too tall
+    const minHeight = 300;
+    const maxHeight = 700;
+    chartHeight = Math.max(minHeight, Math.min(chartHeight, maxHeight));
+
+    // Build final spec with dynamic width and height
+    const sleepQualityJitterSpec = {
+        ...sleepQualityBaseSpec,
+        width: chartWidth,
+        height: chartHeight
+    };
+
+    // Embed chart
+    vegaEmbed("#sleepQualityScatter", sleepQualityJitterSpec, { actions: false });
+}
+
+// Initial render
+renderSleepQualityChart();
+
+// Re-render on window resize (with small debounce)
+let sleepQualityResizeTimer;
+window.addEventListener("resize", () => {
+    clearTimeout(sleepQualityResizeTimer);
+    sleepQualityResizeTimer = setTimeout(renderSleepQualityChart, 200);
+});
+
 
 
 
@@ -661,9 +744,9 @@ const caffeineOccupationSpec = {
 
 vegaEmbed("#caffeineOccupation", caffeineOccupationSpec);
 
-const coffeeReasonsSpec = {
+// Base spec without fixed width/height
+const coffeeReasonsBaseSpec = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-
 
     data: {
         values: [
@@ -679,22 +762,13 @@ const coffeeReasonsSpec = {
 
     transform: [
         {
+            // Create label text like "83.1%"
             calculate: "datum.Percent + '%'",
             as: "Percent_Label"
         }
     ],
 
-    width: 800,
-    height: { step: 48 },
-
-    // title: {
-    //     text: "Top Reasons for Drinking Coffee",
-    //     anchor: "start",
-    //     fontSize: 24,
-    //     color: "#362822",
-    //     fontWeight: "normal",
-    //     dy: -20
-    // },
+    // width and height will be added dynamically in renderCoffeeReasonsChart
 
     layer: [
         {
@@ -732,7 +806,6 @@ const coffeeReasonsSpec = {
                 ]
             }
         },
-
         {
             mark: {
                 type: "text",
@@ -773,10 +846,50 @@ const coffeeReasonsSpec = {
             ticks: false
         }
     }
-
 };
 
-vegaEmbed("#chart_coffee_reasons", coffeeReasonsSpec);
+// Render function for responsive bar chart
+function renderCoffeeReasonsChart() {
+    const container = document.getElementById("chart_coffee_reasons");
+    if (!container) return;
+
+    // Get current container width
+    let containerWidth = container.clientWidth || 800;
+
+    // Limit max width similar to original 800px for readability
+    const maxWidth = 800;
+    const chartWidth = Math.min(containerWidth, maxWidth);
+
+    // Original design: width = 800, height.step = 48
+    const baseStep = 48;
+    const scaleFactor = chartWidth / 800;
+
+    // Scale bar step with width, and clamp to a reasonable range
+    let barStep = baseStep * scaleFactor;
+    const minStep = 32;
+    const maxStep = 64;
+    barStep = Math.max(minStep, Math.min(barStep, maxStep));
+
+    // Build final spec with dynamic width and height.step
+    const coffeeReasonsSpec = {
+        ...coffeeReasonsBaseSpec,
+        width: chartWidth,
+        height: { step: barStep }
+    };
+
+    vegaEmbed("#chart_coffee_reasons", coffeeReasonsSpec, { actions: false });
+}
+
+// Initial render
+renderCoffeeReasonsChart();
+
+// Re-render on window resize (with small debounce)
+let coffeeReasonsResizeTimer;
+window.addEventListener("resize", () => {
+    clearTimeout(coffeeReasonsResizeTimer);
+    coffeeReasonsResizeTimer = setTimeout(renderCoffeeReasonsChart, 200);
+});
+
 
 
 const coffeeSideEffectsSpec = {
