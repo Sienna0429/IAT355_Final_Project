@@ -55,7 +55,7 @@ const baseSpec = {
 };
 
 // Render function to make chart responsive
-function renderSleepChart() {
+function renderSleepHourChart() {
     const container = document.getElementById("sleepHours");
 
     if (!container) return;
@@ -82,271 +82,336 @@ function renderSleepChart() {
 }
 
 // Initial render
-renderSleepChart();
+renderSleepHourChart();
 
 // Re-render on window resize (with small debounce)
-let sleepResizeTimer;
-window.addEventListener("resize", () => {
-    clearTimeout(sleepResizeTimer);
-    sleepResizeTimer = setTimeout(renderSleepChart, 200);
-});
+// let sleepResizeTimer;
+// window.addEventListener("resize", () => {
+//     clearTimeout(sleepResizeTimer);
+//     sleepResizeTimer = setTimeout(renderSleepChart, 200);
+// });
 
 
 
-// const sleepQualityStackedSpec = {
-//     data: { url: "caffeine.csv" },
-
-//     mark: "bar",
-//     width: 800,
-//     height: 650,
-
-//     encoding: {
-//         x: {
-//             field: "Caffeine_mg",
-//             type: "quantitative",
-//             bin: { step: 100 },
-//             title: "Caffeine intake (mg, binned)"
-//         },
-
-
-//         y: {
-//             aggregate: "count",
-//             stack: "normalize",
-//             axis: {
-//                 format: "0%",
-//                 title: "Proportion"
-//             }
-//         },
-
-//         color: {
-//             field: "Sleep_Quality",
-//             type: "nominal",
-//             title: "Sleep quality",
-//             sort: ["Poor", "Fair", "Good", "Excellent"],
-//             scale: {
-//                 range: ["#614033", "#F0DEBB", "#BE9757", "#D26946"]
-//             }
-//         },
-
-//         tooltip: [
-//             {
-//                 field: "Caffeine_mg",
-//                 type: "quantitative",
-//                 bin: { step: 100 },
-//                 title: "Caffeine intake (mg, bin)"
-//             },
-//             { field: "Sleep_Quality", type: "nominal", title: "Sleep quality" },
-//             {
-//                 aggregate: "count",
-//                 field: "Sleep_Quality",
-//                 title: "Number of people"
-//             }
-//         ]
-//     }
-// };
-
-// vegaEmbed("#sleepQuality", sleepQualityStackedSpec);
-
-const sleepQualityHeatmapSpec = {
-    data: { url: "caffeine.csv" },
-
-    width: 800,
-    height: { step: 100 },
-
-    transform: [
-
-        {
-            bin: { step: 100 },
-            field: "Caffeine_mg",
-            as: ["Caffeine_bin", "Caffeine_bin_end"]
-        },
-
-
-        {
-            aggregate: [
-                { op: "count", as: "count" }
-            ],
-            groupby: ["Caffeine_bin", "Caffeine_bin_end", "Sleep_Quality"]
-        },
-
-
-        {
-            joinaggregate: [
-                { op: "sum", field: "count", as: "bin_total" }
-            ],
-            groupby: ["Caffeine_bin", "Caffeine_bin_end"]
-        },
-
-
-        {
-            calculate: "datum.count / datum.bin_total",
-            as: "Proportion"
-        }
-    ],
-
-    mark: "rect",
-
-    encoding: {
-
-        x: {
-            field: "Caffeine_bin",
-            type: "quantitative",
-            bin: { binned: true, step: 100 },
-            title: "Caffeine intake (mg, binned)"
-        },
-        x2: { field: "Caffeine_bin_end" },
-
-
-        y: {
-            field: "Sleep_Quality",
-            type: "nominal",
-            sort: ["Poor", "Fair", "Good", "Excellent"],
-            title: "Sleep quality"
-        },
-
-
-        color: {
-            field: "Proportion",
-            type: "quantitative",
-            title: "Proportion",
-            axis: { format: "0%" },
-            scale: {
-                range: ["#F8EBD8", "#BF9B77", "#362822"]
-            }
-        },
-
-        tooltip: [
-            { field: "Caffeine_bin", title: "Caffeine mg (bin start)" },
-            { field: "Caffeine_bin_end", title: "Caffeine mg (bin end)" },
-            { field: "Sleep_Quality", title: "Sleep quality" },
-            {
-                field: "Proportion",
-                title: "Proportion",
-                format: "0.0%"
-            },
-            { field: "count", title: "Number of people" }
-        ]
-    },
-
-    config: {
-        view: { stroke: null },
-        axis: {
-            labelFont: "Helvetica",
-            titleFont: "Helvetica"
-        }
-    }
-};
-
-vegaEmbed("#sleepQuality", sleepQualityHeatmapSpec);
-
-// Base spec without fixed width/height
-const sleepQualityBaseSpec = {
+const sleepQualityStackedBaseSpec = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
 
     data: { url: "caffeine.csv" },
 
-    // width and height will be added dynamically in render function
-
-    transform: [
-        {
-            // Add jitter to spread points vertically within each category
-            calculate: "(random() - 0.5) * 14",
-            as: "jitter"
-        }
-    ],
-
-    mark: {
-        type: "circle",
-        opacity: 0.4,
-        size: 35
-    },
+    mark: "bar",
 
     encoding: {
         x: {
             field: "Caffeine_mg",
             type: "quantitative",
-            title: "Caffeine intake (mg)"
+            bin: { step: 100 },
+            title: "Caffeine intake (mg, binned)"
         },
 
         y: {
-            field: "Sleep_Quality",
-            type: "nominal",
-            sort: ["Poor", "Fair", "Good", "Excellent"],
-            title: "Sleep quality"
-        },
-
-        yOffset: {
-            field: "jitter",
-            type: "quantitative"
+            aggregate: "count",
+            stack: "normalize",
+            axis: {
+                format: "0%",
+                title: "Proportion"
+            }
         },
 
         color: {
             field: "Sleep_Quality",
             type: "nominal",
+            title: "Sleep quality",
             sort: ["Poor", "Fair", "Good", "Excellent"],
             scale: {
                 range: ["#614033", "#F0DEBB", "#BE9757", "#D26946"]
-            },
-            title: "Sleep quality"
+            }
         },
 
         tooltip: [
-            { field: "Caffeine_mg", type: "quantitative", title: "Caffeine (mg)" },
-            { field: "Sleep_Quality", type: "nominal", title: "Sleep quality" }
+            {
+                field: "Caffeine_mg",
+                type: "quantitative",
+                bin: { step: 100 },
+                title: "Caffeine intake (mg, bin)"
+            },
+            { field: "Sleep_Quality", type: "nominal", title: "Sleep quality" },
+            {
+                aggregate: "count",
+                field: "Sleep_Quality",
+                title: "Number of people"
+            }
         ]
-    },
-
-    config: {
-        view: { stroke: null },
-        axis: {
-            labelFont: "Helvetica",
-            titleFont: "Helvetica"
-        }
     }
 };
+
+
+// Render function for responsive width and height (stacked bar)
+function renderSleepQualityStackedChart() {
+    const container = document.getElementById("sleepQuality");
+    if (!container) return;
+
+    let containerWidth = container.clientWidth || 900;
+
+    const maxWidth = 900;
+    const chartWidth = Math.min(containerWidth, maxWidth);
+
+
+    const aspectRatio = 650 / 800;
+    let chartHeight = chartWidth * aspectRatio;
+
+    const minHeight = 300;
+    const maxHeight = 700;
+    chartHeight = Math.max(minHeight, Math.min(chartHeight, maxHeight));
+
+    const sleepQualityStackedSpec = {
+        ...sleepQualityStackedBaseSpec,
+        width: chartWidth,
+        height: chartHeight
+    };
+
+    vegaEmbed("#sleepQuality", sleepQualityStackedSpec, { actions: false });
+}
+
+
+// const sleepQualityHeatmapSpec = {
+//     data: { url: "caffeine.csv" },
+
+//     width: 800,
+//     height: { step: 100 },
+
+//     transform: [
+
+//         {
+//             bin: { step: 100 },
+//             field: "Caffeine_mg",
+//             as: ["Caffeine_bin", "Caffeine_bin_end"]
+//         },
+
+
+//         {
+//             aggregate: [
+//                 { op: "count", as: "count" }
+//             ],
+//             groupby: ["Caffeine_bin", "Caffeine_bin_end", "Sleep_Quality"]
+//         },
+
+
+//         {
+//             joinaggregate: [
+//                 { op: "sum", field: "count", as: "bin_total" }
+//             ],
+//             groupby: ["Caffeine_bin", "Caffeine_bin_end"]
+//         },
+
+
+//         {
+//             calculate: "datum.count / datum.bin_total",
+//             as: "Proportion"
+//         }
+//     ],
+
+//     mark: "rect",
+
+//     encoding: {
+
+//         x: {
+//             field: "Caffeine_bin",
+//             type: "quantitative",
+//             bin: { binned: true, step: 100 },
+//             title: "Caffeine intake (mg, binned)"
+//         },
+//         x2: { field: "Caffeine_bin_end" },
+
+
+//         y: {
+//             field: "Sleep_Quality",
+//             type: "nominal",
+//             sort: ["Poor", "Fair", "Good", "Excellent"],
+//             title: "Sleep quality"
+//         },
+
+
+//         color: {
+//             field: "Proportion",
+//             type: "quantitative",
+//             title: "Proportion",
+//             axis: { format: "0%" },
+//             scale: {
+//                 range: ["#F8EBD8", "#BF9B77", "#362822"]
+//             }
+//         },
+
+//         tooltip: [
+//             { field: "Caffeine_bin", title: "Caffeine mg (bin start)" },
+//             { field: "Caffeine_bin_end", title: "Caffeine mg (bin end)" },
+//             { field: "Sleep_Quality", title: "Sleep quality" },
+//             {
+//                 field: "Proportion",
+//                 title: "Proportion",
+//                 format: "0.0%"
+//             },
+//             { field: "count", title: "Number of people" }
+//         ]
+//     },
+
+//     config: {
+//         view: { stroke: null },
+//         axis: {
+//             labelFont: "Helvetica",
+//             titleFont: "Helvetica"
+//         }
+//     }
+// };
+
+// vegaEmbed("#sleepQualityHeatmap", sleepQualityHeatmapSpec);
+
+
+
+const sleepQualityBaseSpec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+    data: { url: "caffeine.csv" },
+
+
+    transform: [
+        {
+            calculate: "random() * 0.8 - 0.4",
+            as: "jitter"
+        }
+    ],
+
+    layer: [
+        // layer 1: scatter plot 
+        {
+            mark: {
+                type: "point",
+                filled: true,
+                opacity: 0.4,
+                size: 28
+            },
+            encoding: {
+                x: {
+                    field: "Caffeine_mg",
+                    type: "quantitative",
+                    title: "Caffeine intake (mg)"
+                },
+                y: {
+                    field: "Sleep_Quality",
+                    type: "nominal",
+                    title: "Sleep quality",
+                    sort: ["Poor", "Fair", "Good", "Excellent"]
+                },
+
+                yOffset: {
+                    field: "jitter",
+                    type: "quantitative"
+                },
+                color: {
+                    field: "Sleep_Quality",
+                    type: "nominal",
+                    sort: ["Poor", "Fair", "Good", "Excellent"],
+                    scale: {
+                        range: ["#614033", "#F0DEBB", "#BE9757", "#D26946"]
+                    },
+                    legend: { title: "Sleep quality" }
+                }
+            }
+        },
+
+        // Layer 2: Avg
+        {
+            mark: {
+                type: "image",
+                width: 32,
+                height: 32
+            },
+            encoding: {
+                x: {
+                    field: "Caffeine_mg",
+                    type: "quantitative",
+                    aggregate: "mean"
+                },
+                y: {
+                    field: "Sleep_Quality",
+                    type: "nominal",
+                    sort: ["Poor", "Fair", "Good", "Excellent"]
+                },
+                url: {
+                    value: "src/coffeeBean_You.svg"
+                },
+                tooltip: [
+                    { field: "Sleep_Quality", title: "Sleep quality" },
+                    {
+                        field: "Caffeine_mg",
+                        aggregate: "mean",
+                        title: "Average caffeine (mg)",
+                        format: ".1f"
+                    }
+                ]
+            }
+        }
+
+
+    ]
+};
+
 
 // Render function for responsive width and height
 function renderSleepQualityChart() {
     const container = document.getElementById("sleepQualityScatter");
     if (!container) return;
 
-    // Get current container width
+
     let containerWidth = container.clientWidth || 900;
 
-    // Limit max width for readability (similar to original 900px)
     const maxWidth = 900;
     const chartWidth = Math.min(containerWidth, maxWidth);
 
-    // Keep similar aspect ratio as original 900x700 (height ≈ 0.78 * width)
+
     const aspectRatio = 700 / 900;
     let chartHeight = chartWidth * aspectRatio;
 
-    // Clamp height so it does not get too small or too tall
     const minHeight = 300;
     const maxHeight = 700;
     chartHeight = Math.max(minHeight, Math.min(chartHeight, maxHeight));
 
-    // Build final spec with dynamic width and height
-    const sleepQualityJitterSpec = {
-        ...sleepQualityBaseSpec,
-        width: chartWidth,
-        height: chartHeight
-    };
+    // make coffee bean responsive
+    const beanSize = Math.max(16, Math.min(40, chartWidth / 25));
 
-    // Embed chart
+
+    const sleepQualityJitterSpec = JSON.parse(JSON.stringify(sleepQualityBaseSpec));
+
+
+    sleepQualityJitterSpec.width = chartWidth;
+    sleepQualityJitterSpec.height = chartHeight;
+
+    if (Array.isArray(sleepQualityJitterSpec.layer)) {
+        sleepQualityJitterSpec.layer.forEach(layer => {
+            if (layer.mark && layer.mark.type === "image") {
+                layer.mark.width = beanSize;
+                layer.mark.height = beanSize;
+            }
+        });
+    }
+
     vegaEmbed("#sleepQualityScatter", sleepQualityJitterSpec, { actions: false });
 }
 
+
 // Initial render
 renderSleepQualityChart();
+renderSleepQualityStackedChart();
+
 
 // Re-render on window resize (with small debounce)
-let sleepQualityResizeTimer;
-window.addEventListener("resize", () => {
-    clearTimeout(sleepQualityResizeTimer);
-    sleepQualityResizeTimer = setTimeout(renderSleepQualityChart, 200);
-});
-
+// let sleepQualityResizeTimer;
+// window.addEventListener("resize", () => {
+//     clearTimeout(sleepQualityResizeTimer);
+//     sleepQualityResizeTimer = setTimeout(() => {
+//         renderSleepQualityChart();
+//         renderSleepQualityStackedChart();
+//         renderCoffeeActivityByAgeSummary();
+//     }, 200);
+// });
 
 
 
@@ -534,13 +599,14 @@ const bottom10CaffeineSpec = {
 
 vegaEmbed("#bottom10Caffeine", bottom10CaffeineSpec);
 
-const stressCoffeeSpec = {
+
+const stressCoffeeBaseSpec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+
     data: { url: "caffeine.csv" },
 
-    width: 800,
-    height: 650,
-
     layer: [
+        // Layer 1: boxplot
         {
             mark: {
                 type: "boxplot",
@@ -553,18 +619,24 @@ const stressCoffeeSpec = {
                     sort: ["Low", "Medium", "High"],
                     title: "Stress level",
                     axis: { labelAngle: 0 }
-
                 },
                 y: {
                     field: "Coffee_Intake",
                     type: "quantitative",
                     title: "Coffee intake (cups/day)"
                 },
-                color: { field: "Stress_Level", type: "nominal" }
+                color: {
+                    field: "Stress_Level",
+                    type: "nominal",
+                    scale: {
+                        range: ["#F0C376", "#183348", "#7A2E21"]
+                    },
+                    legend: { title: "Stress level" }
+                }
             }
         },
 
-
+        // Layer 2: jittered points
         {
             mark: {
                 type: "point",
@@ -583,7 +655,6 @@ const stressCoffeeSpec = {
                         bandPaddingInner: 0.1
                     }
                 },
-
                 y: {
                     field: "Coffee_Intake",
                     type: "quantitative"
@@ -593,11 +664,12 @@ const stressCoffeeSpec = {
                     type: "nominal",
                     scale: {
                         range: ["#F0C376", "#183348", "#7A2E21"]
-                    }
+                    },
+                    legend: null
                 },
                 tooltip: [
-                    { field: "Stress_Level", type: "nominal" },
-                    { field: "Coffee_Intake", type: "quantitative", format: ".1f" },
+                    { field: "Stress_Level", type: "nominal", title: "Stress level" },
+                    { field: "Coffee_Intake", type: "quantitative", format: ".1f", title: "Coffee intake (cups/day)" },
                     { field: "Age", type: "quantitative" },
                     { field: "Gender", type: "nominal" }
                 ]
@@ -605,41 +677,61 @@ const stressCoffeeSpec = {
         }
     ]
 };
+function renderStressCoffeeChart() {
+    const container = document.getElementById("stressCoffee");
+    if (!container) return;
 
-vegaEmbed("#stressCoffee", stressCoffeeSpec);
+    let containerWidth = container.clientWidth || 900;
+    const maxWidth = 900;
+    const chartWidth = Math.min(containerWidth, maxWidth);
 
-const coffeeActivityByAgeSummarySpec = {
+    const aspectRatio = 650 / 800;
+    let chartHeight = chartWidth * aspectRatio;
+
+    const minHeight = 300;
+    const maxHeight = 700;
+    chartHeight = Math.max(minHeight, Math.min(chartHeight, maxHeight));
+
+    const stressCoffeeSpec = JSON.parse(JSON.stringify(stressCoffeeBaseSpec));
+    stressCoffeeSpec.width = chartWidth;
+    stressCoffeeSpec.height = chartHeight;
+
+    vegaEmbed("#stressCoffee", stressCoffeeSpec, { actions: false });
+}
+renderStressCoffeeChart();
+
+// Coffee, Activity & Age
+const coffeeActivityByAgeSummaryBaseSpec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+
     data: { url: "caffeine.csv" },
 
     transform: [
         {
-
             calculate:
                 "datum.Age < 25 ? '18–24' : datum.Age < 35 ? '25–34' : datum.Age < 45 ? '35–44' : '45+'",
             as: "Age_Group"
+        },
+        // Only keep Male and Female
+        {
+            filter: "datum.Gender == 'Male' || datum.Gender == 'Female'"
         }
     ],
-
 
     facet: {
         field: "Age_Group",
         type: "nominal",
         title: "Age group",
-        columns: 2
+        sort: ["18–24", "25–34", "35–44", "45+"]
     },
 
-
     spec: {
-        width: 320,
-        height: 280,
-
         mark: {
             type: "line",
             point: true
         },
 
         encoding: {
-
             x: {
                 field: "Coffee_Intake",
                 type: "quantitative",
@@ -658,7 +750,11 @@ const coffeeActivityByAgeSummarySpec = {
             color: {
                 field: "Gender",
                 type: "nominal",
-                title: "Gender"
+                title: "Gender",
+                scale: {
+                    domain: ["Male", "Female"],
+                    range: ["#362822", "#F0C376"]
+                }
             },
 
             tooltip: [
@@ -686,7 +782,47 @@ const coffeeActivityByAgeSummarySpec = {
     }
 };
 
-vegaEmbed("#coffeeActivityByAgeSummary", coffeeActivityByAgeSummarySpec);
+
+function renderCoffeeActivityByAgeSummary() {
+    const container = document.getElementById("coffeeActivityByAgeSummary");
+    if (!container) return;
+
+    let containerWidth = container.clientWidth || 800;
+    const maxWidth = 900;
+    const totalWidth = Math.min(containerWidth, maxWidth);
+
+    const facetColumns = 2;
+    const gap = 24;
+    const perFacetWidth = (totalWidth - gap) / facetColumns;
+
+
+    const baseAspect = 280 / 320;
+    let perFacetHeight = perFacetWidth * baseAspect;
+
+    const minHeight = 140;
+    const maxHeight = 320;
+    perFacetHeight = Math.max(minHeight, Math.min(perFacetHeight, maxHeight));
+
+
+    const spec = JSON.parse(JSON.stringify(coffeeActivityByAgeSummaryBaseSpec));
+
+
+    spec.columns = facetColumns;
+
+
+    spec.spec.width = perFacetWidth;
+    spec.spec.height = perFacetHeight;
+
+    vegaEmbed("#coffeeActivityByAgeSummary", spec, { actions: false });
+}
+
+
+renderCoffeeActivityByAgeSummary();
+
+
+
+
+
 
 const caffeineOccupationSpec = {
     data: { url: "caffeine.csv" },
@@ -884,11 +1020,11 @@ function renderCoffeeReasonsChart() {
 renderCoffeeReasonsChart();
 
 // Re-render on window resize (with small debounce)
-let coffeeReasonsResizeTimer;
-window.addEventListener("resize", () => {
-    clearTimeout(coffeeReasonsResizeTimer);
-    coffeeReasonsResizeTimer = setTimeout(renderCoffeeReasonsChart, 200);
-});
+// let coffeeReasonsResizeTimer;
+// window.addEventListener("resize", () => {
+//     clearTimeout(coffeeReasonsResizeTimer);
+//     coffeeReasonsResizeTimer = setTimeout(renderCoffeeReasonsChart, 200);
+// });
 
 
 
@@ -954,15 +1090,7 @@ const coffeeSideEffectsSpec = {
                     field: "Percent",
                     type: "quantitative",
                     axis: null
-                    // {
-                    //     title: "Percentage of People",
-                    //     titleColor: "#362822",
-                    //     titleFontSize: 12,
-                    //     labels: false,
-                    //     ticks: false,
-                    //     grid: false,
-                    //     domain: false
-                    // }
+
                 },
                 color: { value: "#362822" },
                 tooltip: [
@@ -1004,6 +1132,19 @@ const coffeeSideEffectsSpec = {
 vegaEmbed("#coffeeSideEffects", coffeeSideEffectsSpec);
 
 
+let resizeTimer;
+
+window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        renderCoffeeReasonsChart();
+        renderSleepHourChart();
+        renderSleepQualityChart();
+        renderSleepQualityStackedChart();
+        renderCoffeeActivityByAgeSummary();
+        renderStressCoffeeChart();
+    }, 200);
+});
 
 
 

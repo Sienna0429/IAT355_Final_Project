@@ -21,6 +21,7 @@
                 --text-xxl: 7rem; 
                 --text-xl: 4rem;
                 --text-xxl2: 5rem;
+                --text-l: 2.5rem;
                 --font-helvetica: "Helvetica"
             }
         </style>
@@ -57,7 +58,30 @@
             </div>
         </div>
 
+
+        <h2 class="text-l  text-[#362822] mt-8 mb-3">
+            Individual Caffeine Intake and Corresponding Sleep Quality
+        </h2>
+
         <div id="sleepQualityScatter" class="w-full"></div>
+
+        <div class="flex items-center gap-2 mt-3 ml-6">
+            <img src="src/coffeeBean_You.svg" alt="Average caffeine marker" class="w-5 h-5" />
+
+            <p class="text-[14px] text-[#362822]">
+                This coffee bean marks the average caffeine intake for each sleep quality group. Hover the bean to see
+                the average caffeine intake within each group.
+            </p>
+        </div>
+
+
+
+        <h2 class="text-l  text-[#362822] mt-14 mb-3">
+            Proportion of Sleep Quality Levels by Caffeine Intake
+        </h2>
+
+        <div id="sleepQuality" class="w-full mt-6"></div>
+
 
     </div>
 
