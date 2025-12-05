@@ -1,120 +1,152 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <title>Caffeine Mugs</title>
     <link rel="stylesheet" href="styles.css" />
     <style type="text/tailwindcss">
         @theme {
-                --color-dark-blue: #1A3447;
-                --color-espresso: #362822;
-                --color-coffee: #F0C376;
-                --color-cream: #FAEDD6;
-                --text-xxl: 7rem; 
-                --text-xl: 3.5rem;
-                --text-xxl2: 6rem;
-                --font-helvetica: "Helvetica"
-            }
-        </style>
+            --color-dark-blue: #1A3447;
+            --color-espresso: #362822;
+            --color-coffee: #F0C376;
+            --color-cream: #FAEDD6;
+
+            --font-helvetica: "Helvetica";
+            --font-calibri: "Calibri";
+
+           
+            --text-display-sm: 2.75rem;
+            --text-display-md: 4rem;
+            --text-display-lg: 6rem;
+
+            
+            --text-link-sm: 1.125rem;
+            --text-link-md: 1.5rem;
+            --text-link-lg: 3rem;
+
+            
+            --text-body: 1rem;
+            --text-small: 0.875rem;
+        }
+    </style>
 </head>
 
-<body>
+<body class="bg-white">
 
-    <nav class="w-full flex justify-between items-center py-6 px-10 border-b border-gray-300">
-        <div class="flex space-x-10">
-            <span class="text-sm font-helvetica" style="color:#362822;">IAT 355 (Fall 2025)</span>
-            <span class="text-sm font-helvetica" style="color:#362822;">Caffeine Mugs</span>
+    <!-- Nav -->
+    <nav class="w-full flex justify-between items-center py-6 px-6 md:px-10 border-b border-gray-300">
+        <div class="flex space-x-6 md:space-x-10">
+            <span class="font-helvetica text-small md:text-body" style="color:#362822;">
+                IAT 355 (Fall 2025)
+            </span>
+            <span class="font-helvetica text-small md:text-body" style="color:#362822;">
+                Caffeine Mugs
+            </span>
         </div>
 
-        <a href="index.html" class="px-4 py-2 rounded-lg font-helvetica text-sm hover:bg-[#F2E2C8] transition"
+        <a href="index.html"
+            class="px-4 py-2 rounded-lg font-helvetica text-small md:text-body hover:bg-[#F2E2C8] transition"
             style="background-color:#F8EBD8; color:#362822;">
             Home
         </a>
     </nav>
 
+    <!-- Main content -->
+    <div class="bg-white h-auto w-full py-[72px] md:py-[90px] lg:py-[101px] px-6 md:px-[70px] lg:px-[90px]">
+        <h1 class="font-helvetica font-thin text-display-sm md:text-display-md lg:text-display-lg text-espresso mb-10">
+            The Coffee Health Narrative
+        </h1>
 
-    <div class="bg-white h-auto w-full py-[101px] px-[90px]">
-        <h1 class="text-xxl2 text-espresso font-helvetica font-thin">The Coffee Health Narrative</h1>
-        <div class="grid grid-cols-3">
-            <div class="col-span-2">
-                <ul>
-                    <li><a href="whyCoffee.html"
-                            class="font-helvetica text-xl text-espresso font-extrabold hover:text-coffee flex flex-row">
-                            <img src="src\forward-arrow.svg" class="pr-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 md:gap-10">
+            <!-- links -->
+            <div class="md:col-span-2">
+                <ul class="space-y-6 md:space-y-8">
+                    <li>
+                        <a href="whyCoffee.html"
+                            class="font-helvetica text-link-sm md:text-link-md lg:text-link-lg text-espresso hover:text-coffee flex flex-row items-center">
+                            <img src="src/forward-arrow.svg" class="pr-6 md:pr-8 lg:pr-10" alt="Forward arrow">
                             Why Do We Drink Coffee?
                         </a>
                     </li>
-                    <li><a href="sleepHours.html"
-                            class="font-helvetica text-xl text-espresso font-extrabold hover:text-coffee flex flex-row">
-                            <img src="src\forward-arrow.svg" class="pr-10">
+                    <li>
+                        <a href="sleepHours.html"
+                            class="font-helvetica text-link-sm md:text-link-md lg:text-link-lg text-espresso hover:text-coffee flex flex-row items-center">
+                            <img src="src/forward-arrow.svg" class="pr-6 md:pr-8 lg:pr-10" alt="Forward arrow">
                             Caffeine vs Sleep Hours
                         </a>
                     </li>
-                    <li><a href="sleepQuality.html"
-                            class="font-helvetica text-xl text-espresso font-extrabold hover:text-coffee flex flex-row">
-                            <img src="src\forward-arrow.svg" class="pr-10">
+                    <li>
+                        <a href="sleepQuality.html"
+                            class="font-helvetica text-link-sm md:text-link-md lg:text-link-lg text-espresso hover:text-coffee flex flex-row items-center">
+                            <img src="src/forward-arrow.svg" class="pr-6 md:pr-8 lg:pr-10" alt="Forward arrow">
                             Caffeine vs Sleep Quality
                         </a>
                     </li>
-                    <li><a href="activityAge.html"
-                            class="font-helvetica text-xl text-espresso font-extrabold hover:text-coffee flex flex-row">
-                            <img src="src\forward-arrow.svg" class="pr-10">
+                    <li>
+                        <a href="activityAge.html"
+                            class="font-helvetica text-link-sm md:text-link-md lg:text-link-lg text-espresso hover:text-coffee flex flex-row items-center">
+                            <img src="src/forward-arrow.svg" class="pr-6 md:pr-8 lg:pr-10" alt="Forward arrow">
                             Coffee, Activity & Age
                         </a>
                     </li>
-                    <li><a href="sleepStress.html"
-                            class="font-helvetica text-xl text-espresso font-extrabold hover:text-coffee flex flex-row">
-                            <img src="src\forward-arrow.svg" class="pr-10">
+                    <li>
+                        <a href="sleepStress.html"
+                            class="font-helvetica text-link-sm md:text-link-md lg:text-link-lg text-espresso hover:text-coffee flex flex-row items-center">
+                            <img src="src/forward-arrow.svg" class="pr-6 md:pr-8 lg:pr-10" alt="Forward arrow">
                             Caffeine & Stress
                         </a>
                     </li>
-                    <li><a href="yourHealth.html"
-                            class="font-helvetica text-xl text-espresso font-extrabold hover:text-coffee flex flex-row">
-                            <img src="src\forward-arrow.svg" class="pr-10">
+                    <li>
+                        <a href="yourHealth.html"
+                            class="font-helvetica text-link-sm md:text-link-md lg:text-link-lg text-espresso hover:text-coffee flex flex-row items-center">
+                            <img src="src/forward-arrow.svg" class="pr-6 md:pr-8 lg:pr-10" alt="Forward arrow">
                             Reflect On Your Health
                         </a>
                     </li>
                 </ul>
             </div>
-            <div class="">
-                <img src="src\coffee-bean.svg">
+
+            <!-- Coffeebean svg -->
+            <div class="mt-10 md:mt-0 flex justify-center md:justify-end">
+                <img src="src/coffee-bean.svg" alt="Coffee bean illustration" class="w-40 md:w-52 lg:w-64">
             </div>
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer
+        class="w-full py-10 px-6 md:px-20 lg:px-28 mt-20 font-calibri text-[#362822] bg-[#F8EBD8] text-small md:text-body">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+
+            <!-- Design -->
+            <div>
+                <h3 class="font-semibold text-body mb-3">Design</h3>
+                <p class="font-normal mb-1">Jasmine Bamba</p>
+                <p class="font-normal">Sienna Wu</p>
+            </div>
+
+            <!-- Developer -->
+            <div>
+                <h3 class="font-semibold text-body mb-3">Developer</h3>
+                <p class="font-normal mb-1">Elizabeth Liao</p>
+                <p class="font-normal">Sienna Wu</p>
+            </div>
+
+            <!-- Right side information -->
+            <div class="text-left md:text-right">
+                <h3 class="font-semibold text-body mb-3">
+                    IAT 355 (Fall 2025) | Final Project
+                </h3>
+                <p class="font-normal">© 2025 Caffeine Mugs</p>
+            </div>
+
+
+        </div>
+    </footer>
+
 </body>
-
-<!-- Footer -->
-<footer class="w-full py-10 px-28 mt-20 font-calibri text-[#362822] bg-[#F8EBD8]">
-    <div class="grid grid-cols-3 gap-10">
-
-        <!-- Design -->
-        <div>
-            <h3 class="font-semibold mb-3">Design</h3>
-            <p class="mb-1 font-normal">Jasmine Bamba</p>
-            <p>Sienna Wu</p>
-        </div>
-
-        <!-- Developer -->
-        <div>
-            <h3 class="font-semibold mb-3">Developer</h3>
-            <p class="mb-1 font-normal">Elizabeth Liao</p>
-            <p>Sienna Wu</p>
-        </div>
-
-        <!-- Right side information -->
-        <div class="text-right">
-            <h3 class="font-semibold mb-3">IAT 355 (Fall 2025) | Final Project</h3>
-            <p class="font-normal">© 2025 Caffeine Mugs</p>
-        </div>
-
-    </div>
-</footer>
-
-
 
 </html>

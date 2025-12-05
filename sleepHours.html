@@ -1,100 +1,159 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Vega Lite -->
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-    <title>Why do we drink coffee</title>
+    <title>Caffeine vs Sleep Hours</title>
     <link rel="stylesheet" href="styles.css" />
     <style type="text/tailwindcss">
         @theme {
-                --color-dark-blue: #1A3447;
-                --color-espresso: #362822;
-                --color-coffee: #F0C376;
-                --color-cream: #FAEDD6;
-                --text-xxl: 7rem; 
-                --text-xl: 4rem;
-                --text-xxl2: 5rem;
-                --text-button: 1rem;
-                --font-helvetica: "Helvetica"
-            }
-        </style>
+            --color-dark-blue: #1A3447;
+            --color-espresso: #362822;
+            --color-coffee: #F0C376;
+            --color-cream: #FAEDD6;
+
+            --font-helvetica: "Helvetica";
+            --font-calibri: "Calibri";
+
+            /* Main display headings */
+            --text-display-sm: 2.75rem;
+            --text-display-md: 4rem;
+            --text-display-lg: 6rem;
+
+            /* Link / subsection headings */
+            --text-link-sm: 1.125rem;
+            --text-link-md: 1.5rem;
+            --text-link-lg: 2rem;
+
+            /* Body and small text */
+            --text-body: 1rem;
+            --text-small: 0.875rem;
+        }
+    </style>
 </head>
 
-<body>
-    <nav class="w-full flex justify-between items-center py-6 px-10 border-b border-gray-300">
-        <div class="flex space-x-10">
-            <span class="text-sm font-helvetica" style="color:#362822;">IAT 355 (Fall 2025)</span>
-            <span class="text-sm font-helvetica" style="color:#362822;">Caffeine Mugs</span>
+<body class="bg-white">
+
+    <!-- Nav -->
+    <nav class="w-full flex justify-between items-center py-6 px-6 md:px-10 border-b border-gray-300">
+        <div class="flex space-x-6 md:space-x-10">
+            <span class="font-helvetica text-small md:text-body" style="color:#362822;">
+                IAT 355 (Fall 2025)
+            </span>
+            <span class="font-helvetica text-small md:text-body" style="color:#362822;">
+                Caffeine Mugs
+            </span>
         </div>
 
-        <a href="index.html" class="px-4 py-2 rounded-lg font-helvetica text-sm hover:bg-[#F2E2C8] transition"
+        <a href="index.html"
+            class="px-4 py-2 rounded-lg font-helvetica text-small md:text-body hover:bg-[#F2E2C8] transition"
             style="background-color:#F8EBD8; color:#362822;">
             Home
         </a>
     </nav>
 
-    <div class="bg-white h-auto w-full py-[101px] px-[90px]">
-        <a href="index.html">
-            <img src="src/back-arrow.svg">
+    <!-- Main content -->
+    <main class="bg-white w-full py-[72px] md:py-[90px] lg:py-[101px] px-6 md:px-[70px] lg:px-[90px]">
+
+        <!-- Back arrow -->
+        <a href="index.html" class="inline-flex items-center mb-8">
+            <img src="src/back-arrow.svg" alt="Back to home" class="w-6 h-6 md:w-7 md:h-7">
         </a>
-        <div class="grid grid-cols-6">
-            <div class="col-span-5 pr-[10vw]">
-                <h1 class="text-xxl2 text-espresso font-helvetica font-thin">Caffeine vs Sleep Hours</h1>
-                <p>Now we dive into how sleep and caffeine interact for different people. In the plotted graph comparing
-                    men and women, we
-                    reveal a surprising trend: individuals who get more sleep actually tend to drink more caffeine.</p>
+
+        <!-- Intro section: left text, right illustration -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center mt-4 lg:mt-10">
+
+            <!-- Left: text -->
+            <div class="lg:col-span-7 lg:pr-[4vw]">
+                <h1
+                    class="font-helvetica font-thin text-display-sm md:text-display-md lg:text-display-md text-espresso mb-6 max-w-[14ch]">
+                    Caffeine vs Sleep Hours
+                </h1>
+                <p class="font-calibri text-body text-espresso leading-relaxed max-w-[40rem]">
+                    Now we dive into how sleep and caffeine interact for different people. In the plotted graph
+                    comparing
+                    men and women, we reveal a surprising trend: individuals who get more sleep actually tend to drink
+                    more caffeine.
+                </p>
             </div>
-            <div class="">
-                <img src="src\Insomnia.svg">
+
+            <!-- Right: illustration -->
+            <div class="lg:col-span-5 flex justify-center lg:justify-end mt-8 lg:mt-0">
+                <img src="src/Insomnia.svg" alt="Illustration of insomnia and sleep"
+                    class="w-48 md:w-56 lg:w-[22rem] max-w-full">
             </div>
+        </section>
+
+        <!-- Chart + Next button -->
+        <section class="w-full mt-12 max-w-5xl mx-auto">
+            <div id="sleepHours" class="w-full"></div>
+
+            <div class="mt-8 flex justify-end">
+                <a href="sleepQuality.html" class="
+                    inline-flex
+                    items-center
+                    justify-center
+                    relative
+                    rounded-[25px]
+                    px-12 py-3 md:py-4
+                    bg-[#1E2E3E]
+                    text-white
+                    text-button
+                    font-helvetica
+                    transition-all
+                    duration-300
+                    hover:shadow-[-8px_8px_0_#E9C98F]
+                    active:bg-[#E9C98F]
+                    active:text-[#362822]
+                    active:border active:border-[#4A2B18]
+                    active:shadow-none
+                    active:scale-95
+                ">
+                    Next
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Script -->
+    <script src="main.js"></script>
+
+    <!-- Footer -->
+    <footer
+        class="w-full py-10 px-6 md:px-20 lg:px-28 mt-20 font-calibri text-[#362822] bg-[#F8EBD8] text-small md:text-body">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+
+            <!-- Design -->
+            <div>
+                <h3 class="font-semibold text-body mb-3">Design</h3>
+                <p class="font-normal mb-1">Jasmine Bamba</p>
+                <p class="font-normal">Sienna Wu</p>
+            </div>
+
+            <!-- Developer -->
+            <div>
+                <h3 class="font-semibold text-body mb-3">Developer</h3>
+                <p class="font-normal mb-1">Elizabeth Liao</p>
+                <p class="font-normal">Sienna Wu</p>
+            </div>
+
+            <!-- Right side information -->
+            <div class="text-left md:text-right">
+                <h3 class="font-semibold text-body mb-3">
+                    IAT 355 (Fall 2025) | Final Project
+                </h3>
+                <p class="font-normal">© 2025 Caffeine Mugs</p>
+            </div>
+
         </div>
-        <div id="sleepHours" class="w-full"></div>
-
-    </div>
-
-
-    <script src=" main.js">
-    </script>
-    <div class="py-[60px] px-[90px] flex flex-row justify-end">
-        <a href="sleepQuality.html" class="
-            inline-flex
-            items-center
-            justify-center
-            relative
-            rounded-[25px]
-            px-12 py-6
-            bg-[#1E2E3E]
-            text-white
-            text-button
-            font-helvetica
-            transition-all
-            duration-300
-            hover:shadow-[-8px_8px_0_#E9C98F]
-            active:bg-[#E9C98F]
-            active:text-[#362822]
-            active:border active:border-[#4A2B18]
-            active:shadow-none
-            active:scale-95
-          ">
-            Next
-        </a>
-    </div>
+    </footer>
 
 </body>
-
-<footer class="w-full flex justify-between items-center py-6 px-10 mt-20 text-sm font-helvetica"
-    style="background-color:#F8EBD8; color:#362822;">
-    <span>IAT 355 (Fall 2025) | Final Project</span>
-    <span>© 2025 Caffeine Mugs</span>
-</footer>
-
-
 
 </html>

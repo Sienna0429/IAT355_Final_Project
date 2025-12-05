@@ -1,329 +1,339 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
     <!-- Vega Lite -->
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-    <title>Why do we drink coffee</title>
+
+    <title>Reflect On Your Health</title>
     <link rel="stylesheet" href="styles.css" />
+
+    <!-- Shared theme: colors, fonts, type scale -->
     <style type="text/tailwindcss">
         @theme {
-                --color-dark-blue: #1A3447;
-                --color-espresso: #362822;
-                --color-coffee: #F0C376;
-                --color-cream: #FAEDD6;
-                --text-xxl: 7rem; 
-                --text-xl: 4rem;
-                --text-xxl2: 5rem;
-                --text-l: 2.5rem;
-                --font-helvetica: "Helvetica"
-            }
-        </style>
+            --color-dark-blue: #1A3447;
+            --color-espresso: #362822;
+            --color-coffee: #F0C376;
+            --color-cream: #FAEDD6;
+
+            --font-helvetica: "Helvetica";
+            --font-calibri: "Calibri";
+
+            /* Display headings */
+            --text-display-sm: 2.75rem;
+            --text-display-md: 4rem;
+            --text-display-lg: 6rem;
+
+            /* Subheadings / links */
+            --text-link-sm: 1.125rem;
+            --text-link-md: 1.5rem;
+            --text-link-lg: 2rem;
+
+            /* Body text */
+            --text-body: 1rem;
+            --text-small: 0.875rem;
+        }
+    </style>
 </head>
 
-<body>
-    <nav class="w-full flex justify-between items-center py-6 px-10 border-b border-gray-300">
-        <div class="flex space-x-10">
-            <span class="text-sm font-helvetica" style="color:#362822;">IAT 355 (Fall 2025)</span>
-            <span class="text-sm font-helvetica" style="color:#362822;">Caffeine Mugs</span>
+<body class="bg-white">
+
+    <!-- Navigation -->
+    <nav class="w-full flex justify-between items-center py-6 px-6 md:px-10 border-b border-gray-300">
+        <div class="flex space-x-6 md:space-x-10">
+            <span class="font-helvetica text-small md:text-body" style="color:#362822;">
+                IAT 355 (Fall 2025)
+            </span>
+            <span class="font-helvetica text-small md:text-body" style="color:#362822;">
+                Caffeine Mugs
+            </span>
         </div>
 
-        <a href="index.html" class="px-4 py-2 rounded-lg font-helvetica text-sm hover:bg-[#F2E2C8] transition"
+        <a href="index.html"
+            class="px-4 py-2 rounded-lg font-helvetica text-small md:text-body hover:bg-[#F2E2C8] transition"
             style="background-color:#F8EBD8; color:#362822;">
             Home
         </a>
     </nav>
 
-    <div class="bg-white h-auto w-full py-[101px] px-[90px]">
-        <a href="index.html">
-            <img src="src/back-arrow.svg" alt="Back to home">
+    <!-- Main content -->
+    <main class="bg-white w-full py-[72px] md:py-[90px] lg:py-[101px] px-6 md:px-[70px] lg:px-[90px]">
+
+        <!-- Back to home icon -->
+        <a href="index.html" class="inline-flex items-center mb-8">
+            <img src="src/back-arrow.svg" alt="Back to home" class="w-6 h-6 md:w-7 md:h-7">
         </a>
 
-        <div class="grid grid-cols-6 mt-6">
-            <div class="col-span-5 pr-[10vw]">
-                <h1 class="text-xxl2 text-espresso font-helvetica font-thin mb-4">
+        <!-- Hero section: title + illustration -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center mt-4 lg:mt-10">
+            <!-- Left text -->
+            <div class="lg:col-span-7 lg:pr-[4vw]">
+                <h1
+                    class="font-helvetica font-thin text-display-sm md:text-display-md lg:text-display-md text-espresso mb-4 max-w-[16ch]">
                     Reflect On Your Health
                 </h1>
-                <p class="text-base font-helvetica text-espresso leading-relaxed">
+                <p class="font-calibri text-body text-espresso leading-relaxed max-w-[40rem]">
                     Now it is time to reflect on what you have learned about caffeine and your health.
-                    Use the dashboard below and enter how many cups of coffee you drink per day
+                    Use the dashboard below to enter how many cups of coffee you drink per day
                     and how many hours you usually sleep. You will see how your patterns compare
                     to the people in our dataset.
                 </p>
             </div>
-            <div class="flex justify-end items-start">
-                <img src="src/drinking-coffee.svg" alt="Person drinking coffee">
+
+            <!-- Right illustration -->
+            <div class="lg:col-span-5 flex justify-center lg:justify-end mt-8 lg:mt-0">
+                <img src="src/drinking-coffee.svg" alt="Person drinking coffee"
+                    class="w-48 md:w-56 lg:w-[22rem] max-w-full">
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Input & Result -->
-    <div class="w-full px-[90px] pb-[80px]">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <!-- Left Input -->
-            <div class="rounded-3xl border border-[#E5D2B5] bg-[#FFF9EF] p-8 shadow-sm">
-                <h2 class="text-l font-helvetica text-espresso mb-4">
-                    Enter your daily habits
-                </h2>
+        <!-- Input + Result dashboard -->
+        <section class="w-full mt-16 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
-                <form id="healthForm" class="space-y-6" onsubmit="event.preventDefault(); analyzeHealth();">
-                    <!-- Gender -->
-                    <div>
-                        <label for="genderInput" class="block text-sm font-helvetica text-espresso mb-2">
-                            Gender
-                        </label>
-                        <select id="genderInput"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-
-                    <!-- Age -->
-                    <div>
-                        <label for="ageInput" class="block text-sm font-helvetica text-espresso mb-2">
-                            Age
-                        </label>
-                        <input id="ageInput" type="number" min="15" max="90" step="1" placeholder="For example 26"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
-                    </div>
-
-                    <!-- Coffee intake -->
-                    <div>
-                        <label for="coffeeInput" class="block text-sm font-helvetica text-espresso mb-2">
-                            Cups of coffee per day
-                        </label>
-                        <input id="coffeeInput" type="number" min="0" max="15" step="0.1" placeholder="For example 2.5"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
-                    </div>
-
-                    <!-- Sleep hours -->
-                    <div>
-                        <label for="sleepInput" class="block text-sm font-helvetica text-espresso mb-2">
-                            Sleep hours per night
-                        </label>
-                        <input id="sleepInput" type="number" min="0" max="14" step="0.1" placeholder="For example 7.0"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
-                    </div>
-
-                    <!-- Stress level -->
-                    <div>
-                        <label for="stressInput" class="block text-sm font-helvetica text-espresso mb-2">
-                            Stress level (1–10, self rated)
-                        </label>
-                        <input id="stressInput" type="number" min="1" max="10" step="1" placeholder="For example 7"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
-
-                    </div>
-
-
-                    <button type="submit"
-                        class="mt-4 inline-flex items-center justify-center rounded-[25px] px-8 py-3 bg-[#1E2E3E] text-white text-sm font-helvetica transition-all duration-300 hover:shadow-[-6px_6px_0_#E9C98F] active:bg-[#E9C98F] active:text-[#362822] active:border active:border-[#4A2B18] active:shadow-none active:scale-95">
-                        Reflect with the dataset
-                    </button>
-                </form>
-            </div>
-
-            <!-- Right Result -->
-            <div id="resultCard"
-                class="rounded-3xl border border-[#E5D2B5] bg-white p-8 shadow-sm flex flex-col justify-between">
-                <div>
-                    <h2 class="text-l font-helvetica text-espresso mb-4">
-                        Your Health Predictor
+                <!-- Left: Input card -->
+                <div class="rounded-3xl border border-[#E5D2B5] bg-[#FFF9EF] p-8 shadow-sm">
+                    <h2 class="font-helvetica font-semibold text-link-sm md:text-link-md text-espresso mb-4">
+                        Enter your daily habits
                     </h2>
 
-                    <p id="loadingMessage" class="text-sm font-helvetica text-gray-500 mb-6">
-                        Enter your information on the left and see how you compare to our research!
-                    </p>
-
-                    <div id="vizContainer" class="space-y-8 hidden">
-                        <!-- Legent -->
-                        <div class="flex items-center space-x-6 mb-6">
-                            <div class="flex items-center space-x-3">
-                                <img id="coffeeYou" src="src/coffeeBean_You.svg" alt="You legent" class="h-5 w-auto">
-                                <span class="text-sm font-helvetica text-espresso">You</span>
-                            </div>
-
-                            <div class="flex items-center space-x-3">
-                                <img id="coffeeYou" src="src/coffeeBean_Avg.svg" alt="Avg legent" class="h-5 w-auto">
-                                <span class="text-sm font-helvetica text-espresso">Group average</span>
-                            </div>
+                    <form id="healthForm" class="space-y-6" onsubmit="event.preventDefault(); analyzeHealth();">
+                        <!-- Gender -->
+                        <div>
+                            <label for="genderInput" class="block text-small font-helvetica text-espresso mb-2">
+                                Gender
+                            </label>
+                            <select id="genderInput"
+                                class="w-full border border-gray-300 rounded-xl px-4 py-2 text-small font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
 
-
-                        <p id="summaryText" class="text-sm font-helvetica text-espresso leading-relaxed"></p>
-
-                        <!-- Coffee Bar -->
-                        <div class="space-y-2">
-                            <div class="flex justify-between items-baseline">
-                                <span class="text-sm font-helvetica text-espresso">
-                                    Daily coffee intake
-                                </span>
-                                <span id="coffeeLabel" class="text-xs font-helvetica text-gray-500"></span>
-                            </div>
-
-                            <!-- Outer wrapper controlling bar + beans -->
-                            <div class="relative h-10">
-
-                                <!-- Actual coffee intake bar -->
-                                <div class="absolute inset-x-0 bottom-0 h-4 rounded-full bg-[#F2E2C8] overflow-hidden">
-                                    <!-- No segmentation for this bar -->
-                                </div>
-
-                                <!-- User position bean -->
-                                <div id="coffeeYouWrap" class="absolute flex flex-col items-center z-10"
-                                    style="top:-2; left:50%; transform:translateX(-50%);">
-
-                                    <span class="text-[10px] font-helvetica text-[#1E2E3E] mb-1">You</span>
-
-                                    <img id="coffeeYou" src="src/coffeeBean_You.svg" alt="You indicator"
-                                        class="h-5 w-auto">
-                                </div>
-
-                                <!-- Average position bean -->
-                                <div id="coffeeAvgWrap" class="absolute flex flex-col items-center z-10"
-                                    style="top:-2; left:60%; transform:translateX(-50%);">
-
-                                    <span class="text-[10px] font-helvetica text-[#362822] mb-1">Avg</span>
-
-                                    <img id="coffeeAvg" src="src/coffeeBean_Avg.svg" alt="Average indicator"
-                                        class="h-5 w-auto">
-                                </div>
-
-                            </div>
-
-                            <div class="flex justify-between text-[11px] font-helvetica text-gray-500">
-                                <span>Lower intake</span>
-                                <span>Higher intake</span>
-                            </div>
+                        <!-- Age -->
+                        <div>
+                            <label for="ageInput" class="block text-small font-helvetica text-espresso mb-2">
+                                Age
+                            </label>
+                            <input id="ageInput" type="number" min="15" max="90" step="1" placeholder="For example 26"
+                                class="w-full border border-gray-300 rounded-xl px-4 py-2 text-small font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
                         </div>
 
-
-                        <!-- Sleep Bar -->
-                        <div class="space-y-2">
-                            <div class="flex justify-between items-baseline">
-                                <span class="text-sm font-helvetica text-espresso">
-                                    Sleep hours per night
-                                </span>
-                                <span id="sleepLabel" class="text-xs font-helvetica text-gray-500"></span>
-                            </div>
-
-                            <!-- Outer wrapper controlling bean + bar positioning -->
-                            <div class="relative h-10">
-
-                                <!-- Actual sleep bar background -->
-                                <div class="absolute inset-x-0 bottom-0 h-4 rounded-full bg-[#F2E2C8] overflow-hidden">
-                                    <!-- (No segmentation for sleep bar, so empty here) -->
-                                </div>
-
-                                <!-- User position bean -->
-                                <div id="sleepYouWrap" class="absolute flex flex-col items-center z-10"
-                                    style="top:-2; left:50%; transform:translateX(-50%);">
-                                    <!-- Label -->
-                                    <span class="text-[10px] font-helvetica text-[#1E2E3E] mb-1">You</span>
-
-                                    <!-- Bean icon -->
-                                    <img id="sleepYou" src="src/coffeeBean_You.svg" alt="You indicator"
-                                        class="h-5 w-auto">
-                                </div>
-
-                                <!-- Average position bean -->
-                                <div id="sleepAvgWrap" class="absolute flex flex-col items-center z-10"
-                                    style="top:-2; left:60%; transform:translateX(-50%);">
-                                    <!-- Label -->
-                                    <span class="text-[10px] font-helvetica text-[#362822] mb-1">Avg</span>
-
-                                    <!-- Bean icon -->
-                                    <img id="sleepAvg" src="src/coffeeBean_Avg.svg" alt="Average indicator"
-                                        class="h-5 w-auto">
-                                </div>
-
-                            </div>
-
-                            <div class="flex justify-between text-[11px] font-helvetica text-gray-500">
-                                <span>Less sleep</span>
-                                <span>More sleep</span>
-                            </div>
+                        <!-- Coffee intake -->
+                        <div>
+                            <label for="coffeeInput" class="block text-small font-helvetica text-espresso mb-2">
+                                Cups of coffee per day
+                            </label>
+                            <input id="coffeeInput" type="number" min="0" max="15" step="0.1"
+                                placeholder="For example 2.5"
+                                class="w-full border border-gray-300 rounded-xl px-4 py-2 text-small font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
                         </div>
 
-
-                        <!-- Stress Bar -->
-                        <div class="space-y-2">
-                            <div class="flex justify-between items-baseline">
-                                <span class="text-sm font-helvetica text-espresso">
-                                    Stress level (self rated)
-                                </span>
-                                <span id="stressLabel" class="text-xs font-helvetica text-gray-500"></span>
-                            </div>
-
-                            <!-- Wrapper for positioning both the bar and the coffee bean -->
-                            <div class="relative h-10">
-
-                                <!-- Actual bar (kept lower so the bean can sit on top) -->
-                                <div class="absolute inset-x-0 bottom-0 h-4 rounded-full bg-[#F2E2C8] overflow-hidden">
-
-                                    <!-- Background segmentation lines -->
-                                    <div class="absolute inset-y-0 left-0 w-1/3 border-r border-white/60"></div>
-                                    <div class="absolute inset-y-0 left-1/3 w-1/3 border-r border-white/60"></div>
-                                </div>
-
-                                <!-- Coffee bean indicator (placed OUTSIDE the overflow-hidden container) -->
-                                <!-- This prevents the bean from being clipped -->
-                                <div id="stressYouWrap" class="absolute flex flex-col items-center z-10"
-                                    style="top:-2; left:50%; transform:translateX(-50%);">
-
-                                    <!-- "You" label -->
-                                    <span class="text-[10px] font-helvetica text-[#1E2E3E] mb-1">You</span>
-
-                                    <!-- The bean SVG -->
-                                    <img id="stressYou" src="src/coffeeBean_You.svg" alt="You indicator"
-                                        class="h-5 w-auto">
-                                </div>
-                            </div>
-
-                            <div class="flex justify-between text-[11px] font-helvetica text-gray-500">
-                                <span>Low</span>
-                                <span>Medium</span>
-                                <span>High</span>
-                            </div>
+                        <!-- Sleep hours -->
+                        <div>
+                            <label for="sleepInput" class="block text-small font-helvetica text-espresso mb-2">
+                                Sleep hours per night
+                            </label>
+                            <input id="sleepInput" type="number" min="0" max="14" step="0.1"
+                                placeholder="For example 7.0"
+                                class="w-full border border-gray-300 rounded-xl px-4 py-2 text-small font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
                         </div>
 
-                    </div>
+                        <!-- Stress level -->
+                        <div>
+                            <label for="stressInput" class="block text-small font-helvetica text-espresso mb-2">
+                                Stress level (1–10, self rated)
+                            </label>
+                            <input id="stressInput" type="number" min="1" max="10" step="1" placeholder="For example 7"
+                                class="w-full border border-gray-300 rounded-xl px-4 py-2 text-small font-helvetica focus:outline-none focus:ring-2 focus:ring-[#E9C98F]">
+                        </div>
+
+                        <button type="submit"
+                            class="mt-4 inline-flex items-center justify-center rounded-[25px] px-8 py-3 bg-[#1E2E3E] text-white text-button font-helvetica transition-all duration-300 hover:shadow-[-6px_6px_0_#E9C98F] active:bg-[#E9C98F] active:text-[#362822] active:border active:border-[#4A2B18] active:shadow-none active:scale-95">
+                            Reflect with the dataset
+                        </button>
+                    </form>
                 </div>
 
-                <p class="mt-6 text-xs font-helvetica text-gray-500">
-                    Disclaimer: This dashboard is for personal reflection only. It is based on patterns from Caffeine
-                    Mugs’ caffeine and
-                    health datasets and research, and does not/should not provide medical advice.
-                </p>
+                <!-- Right: Result card -->
+                <div id="resultCard"
+                    class="rounded-3xl border border-[#E5D2B5] bg-white p-8 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h2 class="font-helvetica font-semibold text-link-sm md:text-link-md text-espresso mb-4">
+                            Your Health Predictor
+                        </h2>
+
+                        <p id="loadingMessage" class="text-small md:text-body font-helvetica text-gray-500 mb-6">
+                            Enter your information on the left and see how you compare to our research.
+                        </p>
+
+                        <div id="vizContainer" class="space-y-8 hidden">
+                            <!-- Legend -->
+                            <div class="flex items-center space-x-6 mb-6">
+                                <div class="flex items-center space-x-3">
+                                    <img src="src/coffeeBean_You.svg" alt="You legend" class="h-5 w-auto">
+                                    <span class="text-small font-helvetica text-espresso">You</span>
+                                </div>
+
+                                <div class="flex items-center space-x-3">
+                                    <img src="src/coffeeBean_Avg.svg" alt="Average legend" class="h-5 w-auto">
+                                    <span class="text-small font-helvetica text-espresso">Group average</span>
+                                </div>
+                            </div>
+
+                            <p id="summaryText"
+                                class="text-small md:text-body font-helvetica text-espresso leading-relaxed"></p>
+
+                            <!-- Coffee bar -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-baseline">
+                                    <span class="text-small font-helvetica text-espresso">
+                                        Daily coffee intake
+                                    </span>
+                                    <span id="coffeeLabel" class="text-xs font-helvetica text-gray-500"></span>
+                                </div>
+
+                                <!-- Outer wrapper controlling bar + beans -->
+                                <div class="relative h-10">
+                                    <!-- Bar background -->
+                                    <div
+                                        class="absolute inset-x-0 bottom-0 h-4 rounded-full bg-[#F2E2C8] overflow-hidden">
+                                    </div>
+
+                                    <!-- User position bean -->
+                                    <div id="coffeeYouWrap" class="absolute flex flex-col items-center z-10"
+                                        style="top:-2px; left:50%; transform:translateX(-50%);">
+                                        <span class="text-[10px] font-helvetica text-[#1E2E3E] mb-1">You</span>
+                                        <img id="coffeeYou" src="src/coffeeBean_You.svg" alt="You indicator"
+                                            class="h-5 w-auto">
+                                    </div>
+
+                                    <!-- Average position bean -->
+                                    <div id="coffeeAvgWrap" class="absolute flex flex-col items-center z-10"
+                                        style="top:-2px; left:60%; transform:translateX(-50%);">
+                                        <span class="text-[10px] font-helvetica text-[#362822] mb-1">Avg</span>
+                                        <img id="coffeeAvg" src="src/coffeeBean_Avg.svg" alt="Average indicator"
+                                            class="h-5 w-auto">
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-between text-[11px] font-helvetica text-gray-500">
+                                    <span>Lower intake</span>
+                                    <span>Higher intake</span>
+                                </div>
+                            </div>
+
+                            <!-- Sleep bar -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-baseline">
+                                    <span class="text-small font-helvetica text-espresso">
+                                        Sleep hours per night
+                                    </span>
+                                    <span id="sleepLabel" class="text-xs font-helvetica text-gray-500"></span>
+                                </div>
+
+                                <!-- Outer wrapper -->
+                                <div class="relative h-10">
+                                    <!-- Bar background -->
+                                    <div
+                                        class="absolute inset-x-0 bottom-0 h-4 rounded-full bg-[#F2E2C8] overflow-hidden">
+                                    </div>
+
+                                    <!-- User position bean -->
+                                    <div id="sleepYouWrap" class="absolute flex flex-col items-center z-10"
+                                        style="top:-2px; left:50%; transform:translateX(-50%);">
+                                        <span class="text-[10px] font-helvetica text-[#1E2E3E] mb-1">You</span>
+                                        <img id="sleepYou" src="src/coffeeBean_You.svg" alt="You indicator"
+                                            class="h-5 w-auto">
+                                    </div>
+
+                                    <!-- Average position bean -->
+                                    <div id="sleepAvgWrap" class="absolute flex flex-col items-center z-10"
+                                        style="top:-2px; left:60%; transform:translateX(-50%);">
+                                        <span class="text-[10px] font-helvetica text-[#362822] mb-1">Avg</span>
+                                        <img id="sleepAvg" src="src/coffeeBean_Avg.svg" alt="Average indicator"
+                                            class="h-5 w-auto">
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-between text-[11px] font-helvetica text-gray-500">
+                                    <span>Less sleep</span>
+                                    <span>More sleep</span>
+                                </div>
+                            </div>
+
+                            <!-- Stress bar -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-baseline">
+                                    <span class="text-small font-helvetica text-espresso">
+                                        Stress level (self rated)
+                                    </span>
+                                    <span id="stressLabel" class="text-xs font-helvetica text-gray-500"></span>
+                                </div>
+
+                                <!-- Wrapper for bar + bean -->
+                                <div class="relative h-10">
+                                    <!-- Bar background with segments -->
+                                    <div
+                                        class="absolute inset-x-0 bottom-0 h-4 rounded-full bg-[#F2E2C8] overflow-hidden">
+                                        <div class="absolute inset-y-0 left-0 w-1/3 border-r border-white/60"></div>
+                                        <div class="absolute inset-y-0 left-1/3 w-1/3 border-r border-white/60"></div>
+                                    </div>
+
+                                    <!-- Bean indicator -->
+                                    <div id="stressYouWrap" class="absolute flex flex-col items-center z-10"
+                                        style="top:-2px; left:50%; transform:translateX(-50%);">
+                                        <span class="text-[10px] font-helvetica text-[#1E2E3E] mb-1">You</span>
+                                        <img id="stressYou" src="src/coffeeBean_You.svg" alt="You indicator"
+                                            class="h-5 w-auto">
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-between text-[11px] font-helvetica text-gray-500">
+                                    <span>Low</span>
+                                    <span>Medium</span>
+                                    <span>High</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="mt-6 text-[11px] md:text-xs font-helvetica text-gray-500">
+                        Disclaimer: This dashboard is for personal reflection only. It is based on patterns from
+                        Caffeine Mugs’ caffeine and health datasets and research, and does not provide medical advice.
+                    </p>
+                </div>
+
             </div>
+        </section>
 
+        <!-- Back to Home button -->
+        <div class="mt-16 flex justify-center items-center">
+            <a href="index.html"
+                class="inline-flex items-center justify-center relative rounded-[25px] px-12 py-6 bg-[#1E2E3E] text-white text-button font-helvetica transition-all duration-300 hover:shadow-[-8px_8px_0_#E9C98F] active:bg-[#E9C98F] active:text-[#362822] active:border active:border-[#4A2B18] active:shadow-none active:scale-95">
+                Back to Home
+            </a>
         </div>
-    </div>
 
-    <!-- Back Button -->
-    <div class="py-[40px] px-[90px] flex justify-center items-center">
-        <a href="index.html"
-            class="inline-flex items-center justify-center relative rounded-[25px] px-12 py-6 bg-[#1E2E3E] text-white text-button font-helvetica transition-all duration-300 hover:shadow-[-8px_8px_0_#E9C98F] active:bg-[#E9C98F] active:text-[#362822] active:border active:border-[#4A2B18] active:shadow-none active:scale-95">
-            Back to Home
-        </a>
-    </div>
+    </main>
 
-    <!-- Tooltip -->
+    <!-- Tooltip (used by JS) -->
     <div id="tooltip"
         class="absolute px-2 py-1 text-xs font-helvetica bg-[#362822] text-white rounded hidden pointer-events-none"
         style="z-index:999; transform:translate(-50%, -120%);">
     </div>
 
+    <!-- Main JS for charts -->
     <script src="main.js"></script>
 
+    <!-- Page-specific JS -->
     <script>
         let caffeineData = [];
         let dataLoaded = false;
@@ -348,7 +358,7 @@
 
                 dataLoaded = true;
                 document.getElementById("loadingMessage").innerText =
-                    "Enter your information on the left and see how you compare to our research!";
+                    "Enter your information on the left and see how you compare to our research.";
             })
             .catch(err => {
                 console.error(err);
@@ -356,7 +366,7 @@
                     "Could not load the dataset. Please check the file path.";
             });
 
-        // Percentile
+        // Percentile helper
         function getPercentile(values, x) {
             const filtered = values.filter(v => typeof v === "number" && !isNaN(v));
             if (!filtered.length) return null;
@@ -365,7 +375,7 @@
             return Math.round((count / filtered.length) * 100);
         }
 
-        // Map the value to a 0–100 percent range to control the left position
+        // Map numeric value to 0–100% left position
         function getPosition(values, x) {
             const filtered = values.filter(v => typeof v === "number" && !isNaN(v));
             if (!filtered.length) return 50;
@@ -376,22 +386,22 @@
             return Math.max(0, Math.min(100, t * 100));
         }
 
-        // Map dataset stress levels (Low/Medium/High) to representative scores
+        // Map dataset stress levels (Low/Medium/High) to numeric scores
         function levelToScore(level) {
             if (level === "Low") return 3;
             if (level === "Medium") return 6;
             if (level === "High") return 9;
-            return 6; // default to middle
+            return 6;
         }
 
-        // Map a 1–10 stress score to a 0–100 percent position on the axis
+        // Map a 1–10 stress score to a 0–100 position
         function stressScoreToPos(score) {
             if (isNaN(score)) return 50;
-            const t = (score - 1) / 9; // 1–10 → 0–1
+            const t = (score - 1) / 9;
             return Math.max(0, Math.min(100, t * 100));
         }
 
-        // Tooltip
+        // Tooltip base
         const tooltip = document.getElementById("tooltip");
 
         function attachTooltip(targetId, text) {
@@ -400,10 +410,10 @@
             const wrapper = target.parentElement;
             if (!wrapper) return;
 
-            // store text so it can be updated later
+            // Store text for later updates
             wrapper.dataset.tooltipText = text;
 
-            // only bind events once
+            // Avoid binding multiple listeners
             if (wrapper.dataset.tooltipAttached === "true") {
                 return;
             }
@@ -435,14 +445,14 @@
             const age = Number(document.getElementById("ageInput").value);
             const cups = Number(document.getElementById("coffeeInput").value);
             const sleep = Number(document.getElementById("sleepInput").value);
-            const stressScore = Number(document.getElementById("stressInput").value); // 1–10
+            const stressScore = Number(document.getElementById("stressInput").value);
 
             if (!age || isNaN(cups) || isNaN(sleep) || isNaN(stressScore)) {
                 alert("Please fill in age, coffee intake, sleep hours, and stress level.");
                 return;
             }
 
-            // base group: whole dataset or same-gender subset
+            // Base group: full dataset or same-gender subset
             let group = caffeineData;
             if (gender) {
                 const filtered = caffeineData.filter(d => d.Gender === gender);
@@ -460,7 +470,7 @@
             const avgCoffee = intakeValues.reduce((a, b) => a + b, 0) / intakeValues.length;
             const avgSleep = sleepValues.reduce((a, b) => a + b, 0) / sleepValues.length;
 
-            // summary text
+            // Summary text
             const summaryParts = [];
             summaryParts.push(
                 `You are ${age} years old and reported ${cups.toFixed(1)} cups of coffee per day with ${sleep.toFixed(1)} hours of sleep.`
@@ -474,7 +484,7 @@
             }
             document.getElementById("summaryText").innerText = summaryParts.join(" ");
 
-            // Position: coffee
+            // Coffee position + label
             const coffeePosYou = getPosition(intakeValues, cups);
             const coffeePosAvg = getPosition(intakeValues, avgCoffee);
             document.getElementById("coffeeYouWrap").style.left = coffeePosYou + "%";
@@ -485,7 +495,7 @@
                 : `${cups.toFixed(1)} cups`;
             document.getElementById("coffeeLabel").innerText = coffeeLabelText;
 
-            // Position: sleep
+            // Sleep position + label
             const sleepPosYou = getPosition(sleepValues, sleep);
             const sleepPosAvg = getPosition(sleepValues, avgSleep);
             document.getElementById("sleepYouWrap").style.left = sleepPosYou + "%";
@@ -496,9 +506,7 @@
                 : `${sleep.toFixed(1)} hours`;
             document.getElementById("sleepLabel").innerText = sleepLabelText;
 
-            // ----- Stress: compare within similar coffee intake group -----
-
-            // people with similar coffee intake (±1 cup)
+            // Stress: compare within similar coffee intake group (±1 cup)
             const similarCoffeeGroup = group.filter(d =>
                 typeof d.Coffee_Intake === "number" &&
                 !isNaN(d.Coffee_Intake) &&
@@ -512,9 +520,10 @@
 
             let stressLabel = "";
             let stressComparison = "";
+
             if (stressValues.length > 0) {
                 const avgStress = stressValues.reduce((a, b) => a + b, 0) / stressValues.length;
-                const stressPct = getPercentile(stressValues, stressScore); // use 1–10 vs 3/6/9
+                const stressPct = getPercentile(stressValues, stressScore);
 
                 if (stressPct > 66) {
                     stressComparison = "higher than most people with a similar coffee intake";
@@ -530,7 +539,7 @@
                 stressLabel = `You rated ${stressScore}/10 • we could not find enough similar records to compare.`;
             }
 
-            // position marker on the stress bar using 1–10 score
+            // Stress position + label
             const stressPos = stressScoreToPos(stressScore);
             document.getElementById("stressYouWrap").style.left = stressPos + "%";
             document.getElementById("stressLabel").innerText = stressLabel;
@@ -552,25 +561,42 @@
 
             attachTooltip("stressYou", `Your stress: ${stressScore}/10${stressComparison ? " • " + stressComparison : ""}`);
 
-            // show visualisation
+            // Reveal visualisation
             document.getElementById("loadingMessage").classList.add("hidden");
             document.getElementById("vizContainer").classList.remove("hidden");
         }
     </script>
 
+    <!-- Footer -->
+    <footer
+        class="w-full py-10 px-6 md:px-20 lg:px-28 mt-20 font-calibri text-[#362822] bg-[#F8EBD8] text-small md:text-body">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
 
+            <!-- Design -->
+            <div>
+                <h3 class="font-semibold text-body mb-3">Design</h3>
+                <p class="font-normal mb-1">Jasmine Bamba</p>
+                <p class="font-normal">Sienna Wu</p>
+            </div>
 
+            <!-- Developer -->
+            <div>
+                <h3 class="font-semibold text-body mb-3">Developer</h3>
+                <p class="font-normal mb-1">Elizabeth Liao</p>
+                <p class="font-normal">Sienna Wu</p>
+            </div>
 
+            <!-- Info block -->
+            <div class="text-left md:text-right">
+                <h3 class="font-semibold text-body mb-3">
+                    IAT 355 (Fall 2025) | Final Project
+                </h3>
+                <p class="font-normal">© 2025 Caffeine Mugs</p>
+            </div>
+
+        </div>
+    </footer>
 
 </body>
-
-
-<footer class="w-full flex justify-between items-center py-6 px-10 mt-20 text-sm font-helvetica"
-    style="background-color:#F8EBD8; color:#362822;">
-    <span>IAT 355 (Fall 2025) | Final Project</span>
-    <span>© 2025 Caffeine Mugs</span>
-</footer>
-
-
 
 </html>
