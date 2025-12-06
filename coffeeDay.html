@@ -5,16 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
     <!-- Vega Lite -->
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-
-    <title>Caffeine &amp; Stress</title>
-    <link rel="stylesheet" href="styles.css" />
-
-    <!-- Shared theme: colors, fonts, type scale -->
+    <title>Caffeine vs Sleep Hours</title>
+    <link rel="stylesheet" href="style.css" />
     <style type="text/tailwindcss">
         @theme {
             --color-dark-blue: #1A3447;
@@ -25,17 +21,17 @@
             --font-helvetica: "Helvetica";
             --font-calibri: "Calibri";
 
-            /* Display headings */
+            /* Main display headings */
             --text-display-sm: 2.75rem;
             --text-display-md: 4rem;
             --text-display-lg: 6rem;
 
-            /* Subheadings / links */
+            /* Link / subsection headings */
             --text-link-sm: 1.125rem;
             --text-link-md: 1.5rem;
             --text-link-lg: 2rem;
 
-            /* Body text */
+            /* Body and small text */
             --text-body: 1rem;
             --text-small: 0.875rem;
         }
@@ -44,7 +40,7 @@
 
 <body class="bg-white">
 
-    <!-- Navigation -->
+    <!-- Nav -->
     <nav class="w-full flex justify-between items-center py-6 px-6 md:px-10 border-b border-gray-300">
         <div class="flex space-x-6 md:space-x-10">
             <span class="font-helvetica text-small md:text-body" style="color:#362822;">
@@ -65,42 +61,49 @@
     <!-- Main content -->
     <main class="bg-white w-full py-[72px] md:py-[90px] lg:py-[101px] px-6 md:px-[70px] lg:px-[90px]">
 
-        <!-- Back button -->
+        <!-- Back arrow -->
         <a href="index.html" class="inline-flex items-center mb-8">
             <img src="src/back-arrow.svg" alt="Back to home" class="w-6 h-6 md:w-7 md:h-7">
         </a>
 
-        <!-- Intro hero section -->
+        <!-- Intro section: left text, right illustration -->
         <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center mt-4 lg:mt-10">
 
-            <!-- Left text block -->
+            <!-- Left: text -->
             <div class="lg:col-span-7 lg:pr-[4vw]">
                 <h1
-                    class="font-helvetica font-thin text-display-sm md:text-display-md lg:text-display-md text-espresso mb-6 max-w-[16ch]">
-                    Caffeine &amp; Stress
+                    class="font-helvetica font-thin text-display-sm md:text-display-md lg:text-display-md text-espresso mb-6 max-w-[14ch]">
+                    A Day In The Life Of A Coffee Lover
                 </h1>
                 <p class="font-calibri text-body text-espresso leading-relaxed max-w-[40rem]">
-                    This page explores how caffeine intake relates to stress levels. Many people turn to coffee to cope
-                    with busy days and heavy workloads, but that relationship can be more complex than it seems. The
-                    visualization below shows how different stress levels align with daily caffeine intake, helping you
-                    see where your own habits might fit into the picture.
+                    Here we will walk you through the story of caffeine; a fatigue cycle many of us fall into without
+                    realizing it. In this
+                    interactive timeline, we illustrate what happens throughout a person’s day, collecting data from our
+                    friends and family:
+                    how many hours of sleep a person gets, to their sleep quality and their regular, daily caffeine
+                    consumption.
                 </p>
             </div>
 
-            <!-- Right illustration -->
+            <!-- Right: illustration -->
             <div class="lg:col-span-5 flex justify-center lg:justify-end mt-8 lg:mt-0">
-                <img src="src/emotions.svg" alt="Caffeine and stress illustration"
+                <img src="src/drinking-coffee.svg" alt="Illustration of drking coffee"
                     class="w-48 md:w-56 lg:w-[22rem] max-w-full">
             </div>
         </section>
 
-        <!-- Chart section -->
-        <section class="w-full mt-16 max-w-5xl mx-auto">
-            <div id="stressCoffee" class="w-full"></div>
+        <!-- Chart + Next button -->
+        <section class="w-full mt-12 max-w-5xl mx-auto">
+            <div id="ageChart"></div>
+            <div id="genderChart"></div>
+            <div class="mt-12" id="genderCoffeeChart"></div>
+            <div class="mt-12" id="weekdayActivityChart"></div>
+            <div class="mt-12" id="mentalChangeChart"></div>
+            <div class="mt-12" id="coffeeSleepMeanChart"></div>
 
-            <!-- Next button -->
-            <div class="mt-10 flex justify-end">
-                <a href="coffeeDay.html" class="
+
+            <div class="mt-8 flex justify-end">
+                <a href="yourHealth.html" class="
                     inline-flex
                     items-center
                     justify-center
@@ -124,10 +127,9 @@
                 </a>
             </div>
         </section>
-
     </main>
 
-    <!-- JS -->
+    <!-- Script -->
     <script src="main.js"></script>
 
     <!-- Footer -->
@@ -149,7 +151,7 @@
                 <p class="font-normal">Sienna Wu</p>
             </div>
 
-            <!-- Info block -->
+            <!-- Right side information -->
             <div class="text-left md:text-right">
                 <h3 class="font-semibold text-body mb-3">
                     IAT 355 (Fall 2025) | Final Project

@@ -84,14 +84,6 @@ function renderSleepHourChart() {
 // Initial render
 renderSleepHourChart();
 
-// Re-render on window resize (with small debounce)
-// let sleepResizeTimer;
-// window.addEventListener("resize", () => {
-//     clearTimeout(sleepResizeTimer);
-//     sleepResizeTimer = setTimeout(renderSleepChart, 200);
-// });
-
-
 
 const sleepQualityStackedBaseSpec = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
@@ -171,100 +163,6 @@ function renderSleepQualityStackedChart() {
 
     vegaEmbed("#sleepQuality", sleepQualityStackedSpec, { actions: false });
 }
-
-
-// const sleepQualityHeatmapSpec = {
-//     data: { url: "caffeine.csv" },
-
-//     width: 800,
-//     height: { step: 100 },
-
-//     transform: [
-
-//         {
-//             bin: { step: 100 },
-//             field: "Caffeine_mg",
-//             as: ["Caffeine_bin", "Caffeine_bin_end"]
-//         },
-
-
-//         {
-//             aggregate: [
-//                 { op: "count", as: "count" }
-//             ],
-//             groupby: ["Caffeine_bin", "Caffeine_bin_end", "Sleep_Quality"]
-//         },
-
-
-//         {
-//             joinaggregate: [
-//                 { op: "sum", field: "count", as: "bin_total" }
-//             ],
-//             groupby: ["Caffeine_bin", "Caffeine_bin_end"]
-//         },
-
-
-//         {
-//             calculate: "datum.count / datum.bin_total",
-//             as: "Proportion"
-//         }
-//     ],
-
-//     mark: "rect",
-
-//     encoding: {
-
-//         x: {
-//             field: "Caffeine_bin",
-//             type: "quantitative",
-//             bin: { binned: true, step: 100 },
-//             title: "Caffeine intake (mg, binned)"
-//         },
-//         x2: { field: "Caffeine_bin_end" },
-
-
-//         y: {
-//             field: "Sleep_Quality",
-//             type: "nominal",
-//             sort: ["Poor", "Fair", "Good", "Excellent"],
-//             title: "Sleep quality"
-//         },
-
-
-//         color: {
-//             field: "Proportion",
-//             type: "quantitative",
-//             title: "Proportion",
-//             axis: { format: "0%" },
-//             scale: {
-//                 range: ["#F8EBD8", "#BF9B77", "#362822"]
-//             }
-//         },
-
-//         tooltip: [
-//             { field: "Caffeine_bin", title: "Caffeine mg (bin start)" },
-//             { field: "Caffeine_bin_end", title: "Caffeine mg (bin end)" },
-//             { field: "Sleep_Quality", title: "Sleep quality" },
-//             {
-//                 field: "Proportion",
-//                 title: "Proportion",
-//                 format: "0.0%"
-//             },
-//             { field: "count", title: "Number of people" }
-//         ]
-//     },
-
-//     config: {
-//         view: { stroke: null },
-//         axis: {
-//             labelFont: "Helvetica",
-//             titleFont: "Helvetica"
-//         }
-//     }
-// };
-
-// vegaEmbed("#sleepQualityHeatmap", sleepQualityHeatmapSpec);
-
 
 
 const sleepQualityBaseSpec = {
@@ -402,19 +300,6 @@ renderSleepQualityChart();
 renderSleepQualityStackedChart();
 
 
-// Re-render on window resize (with small debounce)
-// let sleepQualityResizeTimer;
-// window.addEventListener("resize", () => {
-//     clearTimeout(sleepQualityResizeTimer);
-//     sleepQualityResizeTimer = setTimeout(() => {
-//         renderSleepQualityChart();
-//         renderSleepQualityStackedChart();
-//         renderCoffeeActivityByAgeSummary();
-//     }, 200);
-// });
-
-
-
 const coffeeByAgeSpec = {
     data: { url: "caffeine.csv" },
 
@@ -480,124 +365,6 @@ const coffeeByAgeSpec = {
 
 vegaEmbed("#coffeeByAge", coffeeByAgeSpec);
 
-const top10CaffeineSpec = {
-    data: { url: "caffeine.csv" },
-
-    transform: [
-        {
-            aggregate: [
-                { op: "mean", field: "Caffeine_mg", as: "Avg_Caffeine" }
-            ],
-            groupby: ["Country"]
-        },
-        {
-            sort: [{ field: "Avg_Caffeine", order: "descending" }],
-            window: [{ op: "rank", as: "Rank" }]
-        },
-        { filter: "datum.Rank <= 10" }
-    ],
-
-    mark: {
-        type: "point",
-        filled: true,
-        size: 100
-    },
-
-    width: 800,
-    height: 650,
-
-    encoding: {
-        x: {
-            field: "Avg_Caffeine",
-            type: "quantitative",
-            title: "Average caffeine intake (mg)",
-            scale: { domain: [235, 250] },
-            axis: { format: "d", tickCount: 7 }
-        },
-
-        y: {
-            field: "Country",
-            type: "nominal",
-            sort: "-x",
-            title: "Country"
-        },
-
-        color: { value: "#4C78A8" },
-
-        tooltip: [
-            { field: "Country", type: "nominal" },
-            {
-                field: "Avg_Caffeine",
-                type: "quantitative",
-                title: "Avg caffeine (mg)",
-                format: ".1f"
-            }
-        ]
-    }
-};
-
-vegaEmbed("#top10Caffeine", top10CaffeineSpec);
-
-const bottom10CaffeineSpec = {
-    data: { url: "caffeine.csv" },
-
-    transform: [
-        {
-            aggregate: [
-                { op: "mean", field: "Caffeine_mg", as: "Avg_Caffeine" }
-            ],
-            groupby: ["Country"]
-        },
-        {
-            window: [{ op: "rank", as: "Rank" }],
-            sort: [{ field: "Avg_Caffeine", order: "ascending" }]
-        },
-        { filter: "datum.Rank <= 10" }
-    ],
-
-    mark: {
-        type: "point",
-        filled: true,
-        size: 100
-    },
-
-    width: 800,
-    height: 650,
-
-    encoding: {
-        x: {
-            field: "Avg_Caffeine",
-            type: "quantitative",
-            title: "Average caffeine intake (mg)",
-            scale: { domain: [225, 240] },
-            axis: { format: "d", tickCount: 7 },
-            axis: {
-                format: "d"
-            }
-        },
-
-        y: {
-            field: "Country",
-            type: "nominal",
-            sort: "x",
-            title: "Country"
-        },
-
-        color: { value: "#4C78A8" },
-
-        tooltip: [
-            { field: "Country", type: "nominal" },
-            {
-                field: "Avg_Caffeine",
-                type: "quantitative",
-                title: "Avg caffeine (mg)",
-                format: ".1f"
-            }
-        ]
-    }
-};
-
-vegaEmbed("#bottom10Caffeine", bottom10CaffeineSpec);
 
 
 const stressCoffeeBaseSpec = {
@@ -820,66 +587,6 @@ function renderCoffeeActivityByAgeSummary() {
 renderCoffeeActivityByAgeSummary();
 
 
-
-
-
-
-const caffeineOccupationSpec = {
-    data: { url: "caffeine.csv" },
-
-    transform: [
-        {
-            aggregate: [
-                { op: "mean", field: "Caffeine_mg", as: "Avg_Caffeine" }
-            ],
-            groupby: ["Occupation"]
-        }
-    ],
-
-    mark: {
-        type: "point",
-        filled: true,
-        size: 100
-    },
-
-    width: 800,
-    height: 650,
-
-    encoding: {
-        x: {
-            field: "Avg_Caffeine",
-            type: "quantitative",
-            title: "Average caffeine intake (mg)",
-            scale: { domain: [235, 245] },
-            axis: {
-                format: "d",
-                tickCount: 6
-            }
-        },
-
-        y: {
-            field: "Occupation",
-            type: "nominal",
-            sort: "-x",
-            title: "Occupation"
-        },
-
-        color: { value: "#4C78A8" },
-
-        tooltip: [
-            { field: "Occupation", type: "nominal" },
-            {
-                field: "Avg_Caffeine",
-                type: "quantitative",
-                title: "Avg caffeine (mg)",
-                format: ".1f"
-            }
-        ]
-    }
-};
-
-vegaEmbed("#caffeineOccupation", caffeineOccupationSpec);
-
 // Base spec without fixed width/height
 const coffeeReasonsBaseSpec = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
@@ -1019,101 +726,290 @@ function renderCoffeeReasonsChart() {
 // Initial render
 renderCoffeeReasonsChart();
 
-// Re-render on window resize (with small debounce)
-// let coffeeReasonsResizeTimer;
-// window.addEventListener("resize", () => {
-//     clearTimeout(coffeeReasonsResizeTimer);
-//     coffeeReasonsResizeTimer = setTimeout(renderCoffeeReasonsChart, 200);
-// });
-
-
-
-const coffeeSideEffectsSpec = {
+//Data from our survey
+// Age Distribution Pie Chart (Using Project Theme Colors)
+const ageDistributionSpec = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
 
-    description: "Coffee Side Effects",
-
     data: {
-        values: [
-            { Effect: "None", Percent: 60.8 },
-            { Effect: "Jittery or Shaking", Percent: 17.0 },
-            { Effect: "Difficulty Sleeping", Percent: 16.5 },
-            { Effect: "Headache", Percent: 11.5 },
-            { Effect: "Fast Heartbeat", Percent: 10.5 },
-            { Effect: "\"Jolt and Crash\" Episodes", Percent: 9.7 },
-            { Effect: "Nausea, Vomiting, or Diarrhea", Percent: 5.1 },
-            { Effect: "Chest Pain", Percent: 1.7 },
-            { Effect: "Other", Percent: 1.5 },
-            { Effect: "Dental Pain", Percent: 0.8 },
-            { Effect: "Decreased Sexual Performance", Percent: 0.3 },
-            { Effect: "Seizures", Percent: 0.2 },
-            { Effect: "Don't Know, Refuse to Answer", Percent: 2.9 }
-        ]
+        url: "Responses.csv"
     },
 
+    // Create a clean field name without quotes for age
     transform: [
-        { calculate: "datum.Percent + '%'", as: "Percent_Label" }
+        {
+            // Copy the original column "What's your age?" into a new field "AgeGroup"
+            calculate: "datum['What\\'s your age?']",
+            as: "AgeGroup"
+        }
     ],
 
-    width: 650,
-    height: { step: 28 },
+    width: 320,
+    height: 320,
 
-    title: {
-        text: "Coffee Side Effects",
-        anchor: "start",
-        fontSize: 24,
-        color: "#362822",
-        fontWeight: "normal",
-        dy: -20
+    mark: {
+        type: "arc",
+        innerRadius: 70,     // donut style
+        outerRadius: 140
     },
 
-    layer: [
+    encoding: {
+        // Use count of records for angle (no field needed for count)
+        theta: {
+            aggregate: "count",
+            type: "quantitative"
+        },
 
-        {
-            mark: {
-                type: "bar",
-                cornerRadius: 3,
-            },
-            encoding: {
-                y: {
-                    field: "Effect",
-                    type: "nominal",
-                    sort: "-x",
-                    axis: {
-                        title: null,
-                        labelFontSize: 12,
-                        labelColor: "#362822",
-                        labelPadding: 8
-                    }
-                },
-                x: {
-                    field: "Percent",
-                    type: "quantitative",
-                    axis: null
-
-                },
-                color: { value: "#362822" },
-                tooltip: [
-                    { field: "Effect", title: "Side Effect" },
-                    { field: "Percent", title: "Percentage", format: ".1f" }
+        // Color by the new clean field "AgeGroup"
+        color: {
+            field: "AgeGroup",
+            type: "nominal",
+            title: "Age Group",
+            scale: {
+                range: [
+                    "#362822", // espresso
+                    "#F0C376", // coffee
+                    "#F7ECD7", // cream
+                    "#1A3447",  // dark blue
+                    "#D26946"
                 ]
             }
         },
 
+        // Tooltip for interaction
+        tooltip: [
+            { field: "AgeGroup", title: "Age Group" },
+            { aggregate: "count", title: "Count" }
+        ]
+    }
+};
 
+// Render the visualization
+vegaEmbed("#ageChart", ageDistributionSpec);
+
+// Gender Distribution Pie Chart (Using Project Theme Colors)
+const genderDistributionSpec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+
+    data: {
+        url: "Responses.csv"
+    },
+
+    // Create a clean field name for gender
+    transform: [
+        {
+            calculate: "datum['What\\'s your gender?']",
+            as: "Gender"
+        }
+    ],
+
+    width: 320,
+    height: 320,
+
+    mark: {
+        type: "arc",
+        innerRadius: 70,   // donut style
+        outerRadius: 140
+    },
+
+    encoding: {
+        // Use count of records for angle
+        theta: {
+            aggregate: "count",
+            type: "quantitative"
+        },
+
+        // Color by gender, matching project palette
+        color: {
+            field: "Gender",
+            type: "nominal",
+            title: "Gender",
+            scale: {
+                range: [
+                    "#362822", // espresso
+                    "#F0C376", // coffee
+                    "#F7ECD7"  // cream (for other / prefer not to say)
+                ]
+            }
+        },
+
+        tooltip: [
+            { field: "Gender", title: "Gender" },
+            { aggregate: "count", title: "Count" }
+        ]
+    }
+};
+
+// Render gender chart
+vegaEmbed("#genderChart", genderDistributionSpec);
+
+// Gender vs Coffee Intake (Boxplot)
+const genderCoffeeSpec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+
+    data: {
+        url: "Responses.csv"
+    },
+
+    transform: [
+        {
+            // Create a clean gender field
+            calculate: "datum['What\\'s your gender?']",
+            as: "Gender"
+        },
+        {
+            // Convert coffee cups to a numeric field
+            calculate: "toNumber(datum['How many cups of coffee do you normally drink in a day? (1 cup ~ 300mL)'])",
+            as: "CoffeeCups"
+        },
+        {
+            // Keep only valid numeric values
+            filter: "isValid(datum.CoffeeCups) && !isNaN(datum.CoffeeCups)"
+        }
+    ],
+
+    width: 420,
+    height: 320,
+
+    mark: {
+        type: "boxplot",
+        extent: "min-max",   // show full range
+        size: 50
+    },
+
+    encoding: {
+        // Gender on the x-axis
+        x: {
+            field: "Gender",
+            type: "nominal",
+            title: "Gender",
+            axis: { labelAngle: 0 }
+        },
+
+        // Coffee cups on the y-axis
+        y: {
+            field: "CoffeeCups",
+            type: "quantitative",
+            title: "Daily coffee intake (cups)"
+        },
+
+        // Color by gender using project palette
+        color: {
+            field: "Gender",
+            type: "nominal",
+            scale: {
+                range: [
+                    "#362822", // espresso
+                    "#F0C376", // coffee
+                    "#F7ECD7"  // cream
+                ]
+            },
+            legend: { title: "Gender" }
+        },
+
+        tooltip: [
+            { field: "Gender", title: "Gender" },
+            { field: "CoffeeCups", title: "Coffee intake (cups)" }
+        ]
+    }
+};
+
+// Render Gender vs Coffee chart
+vegaEmbed("#genderCoffeeChart", genderCoffeeSpec);
+
+// Weekday Activities Frequency Bar Chart
+
+const weekdayActivitySpec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+
+    data: {
+        values: [
+            { Activity: "Doom scroll your phone", Count: 29 },
+            { Activity: "Full-time Work", Count: 25 },
+            { Activity: "Hang out with friends", Count: 23 },
+            { Activity: "Make Dinner", Count: 23 },
+            { Activity: "School Project", Count: 22 },
+            { Activity: "Make Breakfest", Count: 20 },
+            { Activity: "School Lecture", Count: 20 },
+            { Activity: "Exercise", Count: 20 },
+            { Activity: "Make Lunch", Count: 19 },
+            { Activity: "Part-time Work", Count: 11 },
+            { Activity: "Walk the Dog", Count: 5 }
+        ]
+    },
+
+    transform: [
+        {
+            calculate: "datum.Count + ''",
+            as: "Count_Label"
+        }
+    ],
+
+    width: 520,
+    height: { step: 32 },
+
+    layer: [
+        {
+            mark: {
+                type: "bar",
+                cornerRadius: 3,
+                size: 25
+            },
+            encoding: {
+                y: {
+                    field: "Activity",
+                    type: "nominal",
+                    sort: "-x",
+                    title: null,
+                    axis: {
+                        labelFontSize: 14,
+                        labelColor: "#4A2B18",
+                        labelPadding: 20
+                    }
+                },
+                x: {
+                    field: "Count",
+                    type: "quantitative",
+                    title: null,
+                    axis: {
+                        grid: false,
+                        ticks: false,
+                        labels: false
+                    }
+                },
+                color: {
+                    value: "#362822" // espresso color
+                },
+                tooltip: [
+                    { field: "Activity", title: "Activity" },
+                    { field: "Count", title: "Responses" }
+                ]
+            }
+        },
+
+        // Text label to the right of the bar
         {
             mark: {
                 type: "text",
                 align: "left",
                 baseline: "middle",
                 dx: 5,
-                fontSize: 11,
+                fontSize: 13,
                 color: "#362822"
             },
             encoding: {
-                y: { field: "Effect", type: "nominal", sort: "-x" },
-                x: { field: "Percent", type: "quantitative" },
-                text: { field: "Percent_Label" }
+                y: {
+                    field: "Activity",
+                    type: "nominal",
+                    sort: "-x"
+                },
+                x: {
+                    field: "Count",
+                    type: "quantitative"
+                },
+                text: {
+                    field: "Count_Label"
+                }
             }
         }
     ],
@@ -1128,8 +1024,214 @@ const coffeeSideEffectsSpec = {
     }
 };
 
+// Render activity chart
+vegaEmbed("#weekdayActivityChart", weekdayActivitySpec, { actions: false });
 
-vegaEmbed("#coffeeSideEffects", coffeeSideEffectsSpec);
+
+// Mental State Change After Coffee (Frequency Bar Chart)
+const mentalChangeSpec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+
+    data: {
+        url: "Responses.csv"
+    },
+
+    transform: [
+        {
+            // Convert mental state rating to a numeric field
+            calculate: "toNumber(datum['After drinking coffee, do you feel a change in your mental state?'])",
+            as: "MentalChange"
+        },
+        {
+            // Keep only valid numeric values
+            filter: "isValid(datum.MentalChange) && !isNaN(datum.MentalChange)"
+        },
+        {
+            // Turn number into string label like "1", "2", ..., for cleaner axis
+            calculate: "toString(datum.MentalChange)",
+            as: "MentalChangeLabel"
+        }
+    ],
+
+    width: 520,
+    height: { step: 40 },
+
+    layer: [
+        {
+            mark: {
+                type: "bar",
+                cornerRadius: 3,
+                size: 22  // thinner bar → more space between bars
+            },
+            encoding: {
+                // Vertical: rating levels 1–5
+                y: {
+                    field: "MentalChangeLabel",
+                    type: "nominal",
+                    sort: "ascending",
+                    title: "Perceived mental change (1–5)",
+                    axis: {
+                        labelFontSize: 14,
+                        labelColor: "#4A2B18",
+                        labelPadding: 12
+                    }
+                },
+                // Horizontal: count of responses for each rating
+                x: {
+                    aggregate: "count",
+                    field: "MentalChange",
+                    type: "quantitative",
+                    title: null,
+                    axis: {
+                        grid: false,
+                        ticks: false,
+                        labels: false
+                    }
+                },
+                color: {
+                    value: "#362822" // espresso color
+                },
+                tooltip: [
+                    { field: "MentalChangeLabel", title: "Rating (1–5)" },
+                    { aggregate: "count", field: "MentalChange", title: "Responses" }
+                ]
+            }
+        },
+        {
+            // Text label on the right of each bar showing the count
+            mark: {
+                type: "text",
+                align: "left",
+                baseline: "middle",
+                dx: 8,
+                fontSize: 13,
+                color: "#362822"
+            },
+            encoding: {
+                y: {
+                    field: "MentalChangeLabel",
+                    type: "nominal",
+                    sort: "ascending"
+                },
+                x: {
+                    aggregate: "count",
+                    field: "MentalChange",
+                    type: "quantitative"
+                },
+                text: {
+                    aggregate: "count",
+                    field: "MentalChange"
+                }
+            }
+        }
+    ],
+
+    config: {
+        view: { stroke: null },
+        axis: {
+            domain: false,
+            grid: false,
+            ticks: false
+        }
+    }
+};
+
+// Render mental state change chart
+vegaEmbed("#mentalChangeChart", mentalChangeSpec, { actions: false });
+
+
+// Coffee Cups vs Sleep Duration (Mean + Error Bars)
+const coffeeSleepMeanSpec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+
+    data: { url: "Responses.csv" },
+
+    transform: [
+        // Parse coffee cups
+        {
+            calculate: "toNumber(datum['How many cups of coffee do you normally drink in a day? (1 cup ~ 300mL)'])",
+            as: "CoffeeCups"
+        },
+        {
+            filter: "isValid(datum.CoffeeCups) && !isNaN(datum.CoffeeCups)"
+        },
+
+        // Parse sleep time
+        {
+            calculate: "toDate('2000-01-01 ' + datum['What time do you typically sleep on a weekday?'])",
+            as: "SleepTime"
+        },
+        // Parse wake time
+        {
+            calculate: "toDate('2000-01-02 ' + datum['What time do you typically wake up on a weekday?'])",
+            as: "WakeTime"
+        },
+        // Compute sleep duration in hours
+        {
+            calculate:
+                "((hours(datum.WakeTime) * 60 + minutes(datum.WakeTime)) - " +
+                "(hours(datum.SleepTime) * 60 + minutes(datum.SleepTime))) / 60",
+            as: "SleepDurationHours"
+        },
+        {
+            filter: "datum.SleepDurationHours > 0 && datum.SleepDurationHours < 16"
+        }
+    ],
+
+    width: 520,
+    height: 320,
+
+    layer: [
+        // Error bars (mean ± stdev)
+        {
+            mark: { type: "errorbar", ticks: true, rule: true, color: "#362822" },
+            encoding: {
+                x: {
+                    field: "CoffeeCups",
+                    type: "ordinal",
+                    sort: "ascending",
+                    title: "Daily coffee intake (cups)",
+                    axis: { labelFontSize: 13, labelColor: "#4A2B18" }
+                },
+                y: {
+                    field: "SleepDurationHours",
+                    type: "quantitative",
+                    aggregate: "mean",
+                    title: "Sleep duration (hours)",
+                    axis: { labelFontSize: 13, labelColor: "#4A2B18" }
+                }
+            }
+        },
+
+        // Mean points
+        {
+            mark: {
+                type: "point",
+                filled: true,
+                size: 90,
+                color: "#362822"
+            },
+            encoding: {
+                x: { field: "CoffeeCups", type: "ordinal", sort: "ascending" },
+                y: { field: "SleepDurationHours", type: "quantitative", aggregate: "mean" },
+                tooltip: [
+                    { field: "CoffeeCups", title: "Cups" },
+                    { field: "SleepDurationHours", aggregate: "mean", title: "Avg Sleep (hrs)", format: ".2f" }
+                ]
+            }
+        }
+    ],
+
+    config: {
+        view: { stroke: null },
+        axis: { grid: false, ticks: false, domain: false }
+    }
+};
+
+vegaEmbed("#coffeeSleepMeanChart", coffeeSleepMeanSpec, { actions: false });
+
+
+
 
 
 let resizeTimer;
@@ -1147,5 +1249,95 @@ window.addEventListener("resize", () => {
 });
 
 
+// const sleepQualityHeatmapSpec = {
+//     data: { url: "caffeine.csv" },
 
+//     width: 800,
+//     height: { step: 100 },
+
+//     transform: [
+
+//         {
+//             bin: { step: 100 },
+//             field: "Caffeine_mg",
+//             as: ["Caffeine_bin", "Caffeine_bin_end"]
+//         },
+
+
+//         {
+//             aggregate: [
+//                 { op: "count", as: "count" }
+//             ],
+//             groupby: ["Caffeine_bin", "Caffeine_bin_end", "Sleep_Quality"]
+//         },
+
+
+//         {
+//             joinaggregate: [
+//                 { op: "sum", field: "count", as: "bin_total" }
+//             ],
+//             groupby: ["Caffeine_bin", "Caffeine_bin_end"]
+//         },
+
+
+//         {
+//             calculate: "datum.count / datum.bin_total",
+//             as: "Proportion"
+//         }
+//     ],
+
+//     mark: "rect",
+
+//     encoding: {
+
+//         x: {
+//             field: "Caffeine_bin",
+//             type: "quantitative",
+//             bin: { binned: true, step: 100 },
+//             title: "Caffeine intake (mg, binned)"
+//         },
+//         x2: { field: "Caffeine_bin_end" },
+
+
+//         y: {
+//             field: "Sleep_Quality",
+//             type: "nominal",
+//             sort: ["Poor", "Fair", "Good", "Excellent"],
+//             title: "Sleep quality"
+//         },
+
+
+//         color: {
+//             field: "Proportion",
+//             type: "quantitative",
+//             title: "Proportion",
+//             axis: { format: "0%" },
+//             scale: {
+//                 range: ["#F8EBD8", "#BF9B77", "#362822"]
+//             }
+//         },
+
+//         tooltip: [
+//             { field: "Caffeine_bin", title: "Caffeine mg (bin start)" },
+//             { field: "Caffeine_bin_end", title: "Caffeine mg (bin end)" },
+//             { field: "Sleep_Quality", title: "Sleep quality" },
+//             {
+//                 field: "Proportion",
+//                 title: "Proportion",
+//                 format: "0.0%"
+//             },
+//             { field: "count", title: "Number of people" }
+//         ]
+//     },
+
+//     config: {
+//         view: { stroke: null },
+//         axis: {
+//             labelFont: "Helvetica",
+//             titleFont: "Helvetica"
+//         }
+//     }
+// };
+
+// vegaEmbed("#sleepQualityHeatmap", sleepQualityHeatmapSpec);
 
